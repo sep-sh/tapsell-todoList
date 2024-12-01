@@ -1,5 +1,8 @@
-<h1>header</h1>
-<main>
-  <router-outlet></router-outlet>
-</main>
-<h1>footer</h1>
+<app-side-bar
+  [isLeftSidebarCollapsed]="isLeftSidebarCollapsed()"
+  (changeIsLeftSidebarCollapsed)="changeIsLeftSidebarCollapsed($event)"
+></app-side-bar>
+<app-main-content
+  [isLeftSidebarCollapsed]="isLeftSidebarCollapsed()"
+  [screenWidth]="screenWidth()"
+/>
