@@ -1,0 +1,21 @@
+<div class="task__header__btn_container">
+  <button mat-mini-fab (click)="changeView()" matTooltip="Edit the task">
+    <mat-icon>edit</mat-icon>
+  </button>
+  <button
+    mat-mini-fab
+    [matTooltipPosition]="'below'"
+    (click)="onSubmit()"
+    matTooltip="Move To Daily List"
+  >
+    <mat-icon>trending_flat</mat-icon>
+  </button>
+  <button
+    mat-mini-fab
+    (click)="onSubmit()"
+    matTooltip="Delete the task"
+    class="danger_btn"
+  >
+    <mat-icon>delete</mat-icon>
+  </button>
+</div>

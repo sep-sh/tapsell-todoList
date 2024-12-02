@@ -1,9 +1,18 @@
-<mat-card class="example-card" appearance="outlined">
-  <mat-card-header>
-    <mat-card-title>{{ task().title }}</mat-card-title>
+<mat-card
+  class="task"
+  [formGroup]="taskForm"
+  class="example-card"
+  appearance="outlined"
+>
+  <mat-card-header class="task__header">
+    <app-form-input [mode]="mode" formControlName="title"></app-form-input>
   </mat-card-header>
   <mat-card-content>
-    <div>header test</div>
-    <p>{{ task().description }}</p>
+    <div style="width: 200px">
+      <app-form-input
+        [mode]="mode"
+        formControlName="description"
+      ></app-form-input>
+    </div>
   </mat-card-content>
 </mat-card>
