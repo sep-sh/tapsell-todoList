@@ -1,14 +1,13 @@
-<mat-card
-  class="task"
-  [formGroup]="taskForm"
-  class="example-card"
-  appearance="outlined"
->
+<mat-card class="task" [formGroup]="taskForm" appearance="outlined">
   <mat-card-header class="task__header">
-    <app-form-input [mode]="mode" formControlName="title"></app-form-input>
+    <app-task-control-buttons
+      (taskControlButtonEvent)="onTaskControlButtonsEvent($event)"
+      [mode]="mode"
+    ></app-task-control-buttons>
   </mat-card-header>
   <mat-card-content>
-    <div style="width: 200px">
+    <app-form-input [mode]="mode" formControlName="title"></app-form-input>
+    <div>
       <app-form-input
         [mode]="mode"
         formControlName="description"

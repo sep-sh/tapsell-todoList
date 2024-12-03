@@ -1,3 +1,5 @@
+import { TaskEventType } from "../enums/shared.enum";
+
 export interface Task {
   _id: string;
   title: string;
@@ -6,4 +8,10 @@ export interface Task {
   list: string;
   date: Date;
   __v: number;
+}
+
+
+export type TaskEvent = {
+  type: TaskEventType,
+  data: Task
 }

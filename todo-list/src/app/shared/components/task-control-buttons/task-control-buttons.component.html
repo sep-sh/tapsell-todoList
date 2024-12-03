@@ -1,21 +1,44 @@
-<div class="task__header__btn_container">
-  <button mat-mini-fab (click)="changeView()" matTooltip="Edit the task">
+<div class="task_control_buttons_container">
+  @if (mode()===formMode.VIEW) {
+  <button
+    mat-mini-fab
+    (click)="handleAction(taskControlButtonsEvent.EDIT)"
+    matTooltip="Edit the task"
+  >
     <mat-icon>edit</mat-icon>
   </button>
   <button
     mat-mini-fab
     [matTooltipPosition]="'below'"
-    (click)="onSubmit()"
+    (click)="handleAction(taskControlButtonsEvent.MOVE_TO_DAILY)"
     matTooltip="Move To Daily List"
   >
     <mat-icon>trending_flat</mat-icon>
   </button>
   <button
     mat-mini-fab
-    (click)="onSubmit()"
+    (click)="handleAction(taskControlButtonsEvent.DELETE)"
     matTooltip="Delete the task"
     class="danger_btn"
   >
     <mat-icon>delete</mat-icon>
   </button>
+  } @else if (mode()===formMode.EDIT) {
+  <button
+    mat-mini-fab
+    (click)="handleAction(taskControlButtonsEvent.CANCEL)"
+    matTooltip="cancel the task"
+    class="error_btn"
+  >
+    <mat-icon>cancel</mat-icon>
+  </button>
+  <button
+    mat-mini-fab
+    (click)="handleAction(taskControlButtonsEvent.SUBMIT)"
+    matTooltip="accept the edits "
+  >
+    <mat-icon>check</mat-icon>
+  </button>
+
+  }
 </div>
