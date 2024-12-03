@@ -10,6 +10,8 @@ export interface Task {
   __v: number;
 }
 
+export type TaskId = Task['_id'];
+
 
 export type TaskEvent = {
   type: TaskEventType,

@@ -1,6 +1,5 @@
-import { Component, SkipSelf, forwardRef, inject, input } from '@angular/core';
+import { Component, forwardRef, input } from '@angular/core';
 import {
-  ControlContainer,
   FormControl,
   NG_VALUE_ACCESSOR,
   ReactiveFormsModule,
@@ -38,8 +37,8 @@ export class FormInputComponent {
   formMode = FormMode;
   control = new FormControl();
 
-  private onChange: (value: any) => void = () => {};
-  private onTouched: () => void = () => {};
+  private onChange: (value: any) => void = () => { };
+  private onTouched: () => void = () => { };
 
   writeValue(value: any): void {
     if (value !== undefined) {

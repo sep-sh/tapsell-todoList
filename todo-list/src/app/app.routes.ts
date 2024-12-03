@@ -14,7 +14,7 @@ export const routes: Routes = [
           ),
       },
       {
-        path: 'tasks',
+        path: 'list/:id',
         loadComponent: () =>
           import('./features/tasks-list/tasks-list.component').then(
             (m) => m.TasksListComponent

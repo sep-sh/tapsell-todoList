@@ -8,7 +8,7 @@ import { FormMode, TaskEventType } from '../../enums/shared.enum';
 
 @Component({
   selector: 'app-task-control-buttons',
-  imports: [MatButtonModule, MatIconModule, MatTooltipModule],
+  imports: [MatButtonModule, MatIconModule, MatTooltipModule,],
   templateUrl: './task-control-buttons.component.html',
   styleUrl: './task-control-buttons.component.scss',
   standalone: true,

@@ -5,3 +5,6 @@ export type List = {
   __v: number;
   isMain?: boolean;
 };
+
+
+export type ListId = List['_id'];

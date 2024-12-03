@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Task } from '../../types/task.type';
+import { Task, TaskId } from '../../types/task.type';
+import { ListId } from '../../types/list.type';
 
 @Injectable({
   providedIn: 'root',
@@ -15,11 +16,11 @@ export class TaskApiService {
     return this.http.get<Task[]>('api/tasks');
   }
 
-  public getTasksByListId(listId: string): Observable<Task[]> {
+  public getTasksByListId(listId: ListId): Observable<Task[]> {
     return this.http.get<Task[]>(`api/tasks/query/${listId}`);
   }
 
-  public getTaskById(taskId: string): Observable<Task> {
+  public getTaskById(taskId: TaskId): Observable<Task> {
     return this.http.get<Task>(`api/tasks/${taskId}`);
   }
 
@@ -29,11 +30,11 @@ export class TaskApiService {
   }
 
 
-  public deleteTaskById(taskId: string): Observable<Task> {
+  public deleteTaskById(taskId: TaskId): Observable<Task> {
     return this.http.delete<Task>(`api/tasks/${taskId}`);
   }
 
-  public postTask(task: Task): Observable<Task> {
+  public postTask(task: Partial<Task>): Observable<Task> {
     return this.http.post<Task>('api/tasks', task);
   }
 

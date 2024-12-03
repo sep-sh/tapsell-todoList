@@ -4,7 +4,8 @@
   &__header {
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: flex-start;
+    align-items: center;
     &__btn_container {
       display: flex;
       flex-direction: row;

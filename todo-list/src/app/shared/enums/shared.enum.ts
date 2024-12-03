@@ -1,6 +1,7 @@
 export enum FormMode {
   EDIT,
   VIEW,
+  CREATE
 }
 
 
@@ -9,10 +10,11 @@ export enum TaskEventType {
   EDIT = 'EDIT',
   MOVE_TO_DAILY = 'MOVE_TO_DAILY',
   CANCEL = 'CANCEL',
-  SUBMIT = 'SUBMIT'
+  SUBMIT = 'SUBMIT',
+  STATUS_CHANGE = 'DONE'
 }
 
-export enum DialogEvent{
+export enum DialogEvent {
   ACCEPT,
   CANCEL
 

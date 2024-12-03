@@ -8,8 +8,8 @@ import {
   MatDialogTitle,
 } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { Task } from '../../../../shared/types/task.type';
-import { DialogEvent } from '../../../../shared/enums/shared.enum';
+import { DialogEvent } from '../../enums/shared.enum';
+import { Task } from '../../types/task.type';
 @Component({
   selector: 'app-delete-completed-task-dialog',
   imports: [MatButtonModule, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent],
@@ -17,8 +17,8 @@ import { DialogEvent } from '../../../../shared/enums/shared.enum';
   styleUrl: './delete-completed-task-dialog.component.scss',
   standalone: true
 })
-export class DeleteCompletedTaskDialogComponent {
-  readonly dialogRef = inject(MatDialogRef<DeleteCompletedTaskDialogComponent>);
+export class DeleteTaskDialogComponent {
+  readonly dialogRef = inject(MatDialogRef<DeleteTaskDialogComponent>);
   readonly data = inject<Task>(MAT_DIALOG_DATA);
   completedTaskEnumEvent = DialogEvent
 

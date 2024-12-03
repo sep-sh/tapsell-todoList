@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, output } from '@angular/core';
+import { Component, effect, input, output } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { SideBarService } from './services/side-bar.service';
+import { sideBarLink } from './types/layout.type';
 @Component({
   selector: 'app-side-bar',
   imports: [RouterModule, CommonModule, MatIconModule],
@@ -12,23 +14,8 @@ import { MatIconModule } from '@angular/material/icon';
 export class SideBarComponent {
   isLeftSidebarCollapsed = input.required<boolean>();
   changeIsLeftSidebarCollapsed = output<boolean>();
-  items = [
-    {
-      routeLink: 'mainList',
-      icon: 'home',
-      label: 'mainList',
-    },
-    {
-      routeLink: 'completed',
-      icon: 'checklist',
-      label: 'completed',
-    },
-    {
-      routeLink: 'tasks',
-      icon: 'list',
-      label: 'tasks',
-    },
-  ];
+  constructor(public sideBarService: SideBarService) {
+}
 
   toggleCollapse(): void {
     this.changeIsLeftSidebarCollapsed.emit(!this.isLeftSidebarCollapsed());
