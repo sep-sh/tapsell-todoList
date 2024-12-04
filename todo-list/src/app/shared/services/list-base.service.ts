@@ -2,7 +2,7 @@ import { WritableSignal, inject, signal } from "@angular/core";
 import { IListsService } from "../interfaces/tasks-list.interface";
 import { List, ListId } from "../types/list.type";
 import { ListsService } from "./lists.service";
-import { SNACK_MESSAGES } from "../constants/snack.constant";
+import { SNACK_SUCCESS_MESSAGES } from "../constants/snack.constant";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
 import { ActionStatus, DialogEvent, ListEventType } from "../enums/shared.enum";
@@ -63,7 +63,7 @@ export class BaseListService implements IListsService {
   public deleteList(list: List): Observable<ListActionResult> {
     return this.listsService.deleteListById(list._id).pipe(
       tap(() => {
-        this.handleSnackMessage(SNACK_MESSAGES.listDeleted);
+        this.handleSnackMessage(SNACK_SUCCESS_MESSAGES.listDeleted);
         this.router.navigate(['']);
       }),
       map(() => ({
@@ -77,7 +77,7 @@ export class BaseListService implements IListsService {
   updateList(list: List): Observable<ListActionResult> {
     return this.listsService.updateListById(list).pipe(
       tap(() => {
-        this.handleSnackMessage(SNACK_MESSAGES.listUpdated);
+        this.handleSnackMessage(SNACK_SUCCESS_MESSAGES.listUpdated);
       }),
       map(() => ({
         type: ListEventType.UPDATE,
@@ -86,11 +86,10 @@ export class BaseListService implements IListsService {
     );
   }
 
-
   createList(): void {
     this.newListDialogService.open()
-
   }
+
 
   private handleSnackMessage(message: string, action: string = 'ok!', duration: number = 1500): void {
     this._snackBar.open(message, action, {

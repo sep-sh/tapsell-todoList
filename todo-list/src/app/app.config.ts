@@ -14,6 +14,7 @@ import {
   BaseUrlInterceptor,
 } from './core/interceptors/base-url.interceptor';
 import { environment } from '../environments/environment';
+import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,6 +24,7 @@ export const appConfig: ApplicationConfig = {
 
     provideHttpClient(withInterceptorsFromDi()),
     { provide: HTTP_INTERCEPTORS, useClass: BaseUrlInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: BASE_URL, useValue: environment.baseUrl },
   ],
 };

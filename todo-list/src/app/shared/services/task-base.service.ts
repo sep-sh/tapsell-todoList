@@ -5,7 +5,7 @@ import { Task } from "../types/task.type";
 import { MatDialog } from "@angular/material/dialog";
 import { DeleteTaskDialogComponent } from "../components/delete-task-dialog/delete-completed-task-dialog.component";
 import { ActionStatus, DialogEvent, TaskEventType } from "../enums/shared.enum";
-import { SNACK_MESSAGES } from "../constants/snack.constant";
+import { SNACK_SUCCESS_MESSAGES } from "../constants/snack.constant";
 import { TaskApiService } from "./http/task-api.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ListId } from "../types/list.type";
@@ -37,7 +37,7 @@ export class TaskBaseService implements ITasksService {
   deleteTask(task: Task): Observable<TaskActionResult> {
     return this.taskApiService.deleteTaskById(task._id).pipe(
       map(() => {
-        this._snackBar.open(SNACK_MESSAGES.taskDeleted, 'ok!', {
+        this._snackBar.open(SNACK_SUCCESS_MESSAGES.taskDeleted, 'ok!', {
           duration: 1500,
         });
         return { type: TaskEventType.DELETE, status: ActionStatus.SUCCESS };
@@ -59,7 +59,7 @@ export class TaskBaseService implements ITasksService {
     const newTask = { ...task, list: listId };
     return this.taskApiService.postTask(newTask).pipe(
       map(() => {
-        this._snackBar.open(SNACK_MESSAGES.taskCreated, 'ok!', {
+        this._snackBar.open(SNACK_SUCCESS_MESSAGES.taskCreated, 'ok!', {
           duration: 1500,
         });
         return { type: TaskEventType.CREATE, status: ActionStatus.SUCCESS };
@@ -71,7 +71,7 @@ export class TaskBaseService implements ITasksService {
   updateTask(task: Task): Observable<TaskActionResult> {
     return this.taskApiService.updateTaskById(task).pipe(
       map(() => {
-        this._snackBar.open(SNACK_MESSAGES.taskUpdated, 'ok!', {
+        this._snackBar.open(SNACK_SUCCESS_MESSAGES.taskUpdated, 'ok!', {
           duration: 1500,
         });
         return { type: TaskEventType.EDIT, status: ActionStatus.SUCCESS };
@@ -84,7 +84,7 @@ export class TaskBaseService implements ITasksService {
     task.list = mainListId;
     return this.taskApiService.updateTaskById(task).pipe(
       map(() => {
-        this._snackBar.open(SNACK_MESSAGES.taskMovedToDaily, 'ok!', {
+        this._snackBar.open(SNACK_SUCCESS_MESSAGES.taskMovedToDaily, 'ok!', {
           duration: 1500,
         });
         return { type: TaskEventType.MOVE_TO_DAILY, status: ActionStatus.SUCCESS };
