@@ -1,14 +1,11 @@
 import { Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { List } from '../../../shared/types/list.type';
 import { Task } from '../../../shared/types/task.type';
-import { NewListDialogService } from '../../../shared/services/new-list-dialog.service';
 import { MainListTaskService } from './main-list-task.service';
 import { MainListListService } from './main-list-list.service';
 import { ListActionResult, TaskActionResult } from '../../../shared/types/shared.type';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class MainListService {
   public tasks: WritableSignal<Task[]>
   readonly mainList: Signal<List | undefined>;
@@ -17,7 +14,7 @@ export class MainListService {
   readonly listActionCompleted: WritableSignal<ListActionResult | null> = signal<ListActionResult | null>(null);
 
 
-  constructor(private taskService: MainListTaskService, private listsService: MainListListService, private newListDialogService: NewListDialogService) {
+  constructor(private taskService: MainListTaskService, private listsService: MainListListService) {
     this.mainList = this.listsService.mainList
     this.tasks = this.taskService.tasks
   }

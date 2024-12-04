@@ -9,6 +9,7 @@ import { MatTableModule } from '@angular/material/table';
   imports: [MatTableModule, MatButtonModule, MatIconModule],
   templateUrl: './completed-list.component.html',
   styleUrl: './completed-list.component.scss',
+  providers: [CompletedListService],
   standalone: true,
 })
 export class CompletedListComponent implements OnInit {

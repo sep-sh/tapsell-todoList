@@ -11,7 +11,6 @@ import { DialogEvent } from '../../enums/shared.enum';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { NewListDialog } from '../../types/list.type';
 
 
 

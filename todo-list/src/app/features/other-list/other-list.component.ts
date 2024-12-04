@@ -9,13 +9,17 @@ import { NewTaskComponent } from '../../shared/components/new-task/new-task.comp
 import { TaskComponent } from '../../shared/components/task/task.component';
 import { TaskEventType } from '../../shared/enums/shared.enum';
 import { ListActionResult, TaskActionResult } from '../../shared/types/shared.type';
+import { OtherListsListService } from './service/other-lists-list.service';
+import { OtherListsTaskService } from './service/other-lists-task.service';
+import { NewListDialogService } from '../../shared/services/new-list-dialog.service';
 
 @Component({
   selector: 'app-other-list',
   imports: [TaskComponent, NewTaskComponent, ListHeaderComponent],
   templateUrl: './other-list.component.html',
   styleUrl: './other-list.component.scss',
-  standalone: true
+  standalone: true,
+  providers: [OtherListsTaskService, OtherListsListService, OtherListService,NewListDialogService]
 })
 export class OtherListComponent {
   readonly list: Signal<List | null>;

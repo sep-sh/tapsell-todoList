@@ -3,18 +3,16 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogEvent } from '../enums/shared.enum';
 import { NewListDialogComponent } from '../components/new-list-dialog/new-list-dialog.component';
 import { NewListDialog } from '../types/list.type';
-import { ListsService } from './lists.service';
+import { ListsService } from '../../core/services/lists.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class NewListDialogService {
   readonly dialog = inject(MatDialog);
 
 
-  constructor(private listsServie:ListsService) { }
+  constructor(private listsServie: ListsService) { }
 
-  open(){
+  open() {
     const dialogRef = this.dialog.open(NewListDialogComponent, {
     });
 

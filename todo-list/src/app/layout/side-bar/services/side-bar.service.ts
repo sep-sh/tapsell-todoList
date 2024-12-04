@@ -1,7 +1,7 @@
 import { computed, Injectable, Signal } from '@angular/core';
 import { List } from '../../../shared/types/list.type';
 import { sideBarLink } from '../types/layout.type';
-import { ListsService } from '../../../shared/services/lists.service';
+import { ListsService } from '../../../core/services/lists.service';
 import { NewListDialogService } from '../../../shared/services/new-list-dialog.service';
 
 const SIDEBAR_MAIN_ITEMS: sideBarLink[] = [
@@ -18,9 +18,7 @@ const SIDEBAR_MAIN_ITEMS: sideBarLink[] = [
 ];
 
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class SideBarService {
   readonly otherLists: Signal<List[]>;
   readonly sideBarLinks = computed(() =>

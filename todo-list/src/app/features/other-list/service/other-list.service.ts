@@ -5,9 +5,7 @@ import { OtherListsTaskService } from './other-lists-task.service';
 import { Task } from '../../../shared/types/task.type';
 import { ListActionResult, TaskActionResult } from '../../../shared/types/shared.type';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class OtherListService {
   readonly list: Signal<List | null>;
   readonly tasks: Signal<Task[]>;

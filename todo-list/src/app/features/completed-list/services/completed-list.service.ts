@@ -3,12 +3,10 @@ import { TaskApiService } from '../../../shared/services/http/task-api.service';
 import { Task } from '../../../shared/types/task.type';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
-import { DeleteTaskDialogComponent } from '../../../shared/components/delete-task-dialog/delete-completed-task-dialog.component';
+import { DeleteTaskDialogComponent } from '../../../shared/components/delete-dialog/delete-completed-task-dialog.component';
 import { DialogEvent } from '../../../shared/enums/shared.enum';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 
 export class CompletedListService {
   public readonly completedTasks = signal<Task[]>([]);

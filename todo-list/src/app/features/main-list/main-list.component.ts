@@ -7,13 +7,17 @@ import { NewTaskComponent } from "../../shared/components/new-task/new-task.comp
 import { TaskComponent } from "../../shared/components/task/task.component";
 import { TaskEventType } from '../../shared/enums/shared.enum';
 import { ListActionResult, TaskActionResult } from '../../shared/types/shared.type';
+import { MainListTaskService } from './services/main-list-task.service';
+import { MainListListService } from './services/main-list-list.service';
+import { NewListDialogService } from '../../shared/services/new-list-dialog.service';
 
 @Component({
   selector: 'app-main-list',
   imports: [ListHeaderComponent, NewTaskComponent, TaskComponent],
   templateUrl: './main-list.component.html',
   styleUrl: './main-list.component.scss',
-  standalone: true
+  standalone: true,
+  providers: [MainListListService, MainListTaskService, MainListService,NewListDialogService]
 })
 export class MainListComponent implements OnInit {
   readonly list: Signal<List | undefined>;
@@ -21,7 +25,7 @@ export class MainListComponent implements OnInit {
   readonly listActionCompleted: Signal<ListActionResult | null>;
   readonly tasksActionCompleted: Signal<TaskActionResult | null>;
 
-  
+
 
 
   constructor(private service: MainListService) {

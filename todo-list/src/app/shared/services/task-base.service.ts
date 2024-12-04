@@ -3,13 +3,13 @@ import { ITasksService } from "../interfaces/tasks-list.interface";
 import { TaskActionResult } from "../types/shared.type";
 import { Task } from "../types/task.type";
 import { MatDialog } from "@angular/material/dialog";
-import { DeleteTaskDialogComponent } from "../components/delete-task-dialog/delete-completed-task-dialog.component";
+import { DeleteTaskDialogComponent } from "../components/delete-dialog/delete-completed-task-dialog.component";
 import { ActionStatus, DialogEvent, TaskEventType } from "../enums/shared.enum";
 import { SNACK_SUCCESS_MESSAGES } from "../constants/snack.constant";
 import { TaskApiService } from "./http/task-api.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ListId } from "../types/list.type";
-import { EMPTY, map, Observable, of, switchMap } from "rxjs";
+import { EMPTY, map, Observable, switchMap } from "rxjs";
 
 export class TaskBaseService implements ITasksService {
 

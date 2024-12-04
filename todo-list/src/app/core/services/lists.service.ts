@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
-import { List, ListId } from '../types/list.type';
-import { ListApiService } from './http/list-api.service';
+import { List, ListId } from '../../shared/types/list.type';
+import { ListApiService } from '../../shared/services/http/list-api.service';
 import { Observable, tap } from 'rxjs';
 
 @Injectable({
@@ -20,12 +20,6 @@ export class ListsService {
     })
   }
 
-
-
-  public removeList() {
-  }
-
-
   fetchLists() {
     this.listApiService.getAllLists().subscribe((lists: List[]) => {
       const mainList = lists.find((list: List) => list.isMain)
@@ -34,9 +28,6 @@ export class ListsService {
       this.otherLists.set(otherLists)
     })
   }
-
-
-
 
   public getListById(listId: ListId): Observable<List> {
     return this.listApiService.getListById(listId)
