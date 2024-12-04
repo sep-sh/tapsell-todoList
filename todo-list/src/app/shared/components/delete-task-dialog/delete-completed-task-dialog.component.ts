@@ -21,7 +21,7 @@ import { List } from '../../types/list.type';
 export class DeleteTaskDialogComponent {
   readonly dialogRef = inject(MatDialogRef<DeleteTaskDialogComponent>);
   readonly data = inject<Task | List>(MAT_DIALOG_DATA);
-  completedTaskEnumEvent = DialogEvent
+  dialogEvent = DialogEvent
 
   closeDialog(event: DialogEvent) {
     this.dialogRef.close(event);

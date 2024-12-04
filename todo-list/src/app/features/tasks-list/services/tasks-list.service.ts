@@ -1,14 +1,14 @@
-import { inject, Injectable, signal, WritableSignal } from '@angular/core';
+import { inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { TaskApiService } from '../../../shared/services/http/task-api.service';
-import { ListApiService } from '../../../shared/services/http/list-api.service';
 import { Task } from '../../../shared/types/task.type';
 import { List, ListId } from '../../../shared/types/list.type';
-import { Observable, of, tap } from 'rxjs';
+import { Observable,  } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteTaskDialogComponent } from '../../../shared/components/delete-task-dialog/delete-completed-task-dialog.component';
 import { DialogEvent } from '../../../shared/enums/shared.enum';
 import { Router } from '@angular/router';
+import { ListsService } from '../../../shared/services/lists.service';
 
 const SNACK_MESSAGES = {
   taskMovedToDaily: 'Task Moved To Daily List!',
@@ -27,13 +27,21 @@ export class TasksListService {
   private readonly _snackBar = inject(MatSnackBar);
   public tasks: WritableSignal<Task[]> = signal<Task[]>([]);
   public list: WritableSignal<List | null> = signal<List | null>(null);
-  public listId: WritableSignal<ListId | null> = signal<ListId | null>(null);
-  public mainList: WritableSignal<List | null> = signal<List | null>(null);
+  public currentPageListId: WritableSignal<ListId | null> = signal<ListId | null>(null);
   public resetCreateTaskForm: WritableSignal<boolean> = signal<boolean>(false);
   public resetListForm: WritableSignal<boolean> = signal<boolean>(false);
+  readonly otherLists: Signal<List[]>;
+  readonly mainList: Signal<List | undefined>;
+
+  constructor(private taskApiService: TaskApiService,
+    private router: Router,
+    private listsService: ListsService) {
 
 
-  constructor(private taskApiService: TaskApiService, private listApiService: ListApiService, private router: Router) { }
+    this.otherLists = this.listsService.otherLists
+    this.mainList = this.listsService.mainList
+
+  }
 
 
   public fetchPageData(): void {
@@ -53,8 +61,20 @@ export class TasksListService {
     });
   }
 
+  private deleteTask(task: Task, snackMessage: string): void {
+    this.taskApiService.deleteTaskById(task._id).subscribe((result: Task) => {
+      this._snackBar.open('Task deleted Succesfully!', 'ok!', {
+        duration: 1500,
+      });
+      this.setTasksData()
+
+    })
+  }
+
+
+
   public onCreateNewTaskEvent(task: Partial<Task>) {
-    const newTask = { ...task, list: this.listId()! }
+    const newTask = { ...task, list: this.currentPageListId()! }
     this.createNewTask(newTask).subscribe(task => {
       this._snackBar.open(SNACK_MESSAGES.taskCreated, 'ok!', {
         duration: 1500,
@@ -66,7 +86,6 @@ export class TasksListService {
   }
 
   public onDeleteListEvent(list: List) {
-    console.log('list', list)
     const dialogRef = this.dialog.open(DeleteTaskDialogComponent, {
       data: list
     });
@@ -74,7 +93,6 @@ export class TasksListService {
       if (result === DialogEvent.ACCEPT) {
         console.log('result', result)
         this.deleteList(list, SNACK_MESSAGES.listDeleted)
-        // this.deleteTask(task, SNACK_MESSAGES.taskDeleted)
       }
     });
 
@@ -91,33 +109,19 @@ export class TasksListService {
   }
 
   public onMoveToDailyEvent(task: Task) {
-    this.getDailyListId().subscribe((mainList: List) => {
-      task.list = mainList._id
-      this.updateTask(task, SNACK_MESSAGES.taskMovedToDaily)
-    })
+    task.list = this.mainList()?._id!
+    this.updateTask(task, SNACK_MESSAGES.taskMovedToDaily)
+
   }
-
-
-  private getDailyListId(): Observable<List> {
-    if (this.mainList()) {
-      return of(this.mainList()!);
-    } else {
-      return this.listApiService.getMainList().pipe(
-        tap((list: List) => this.mainList.set(list))
-      );
-    }
-  }
-
-
 
   private setTasksData(): void {
-    this.taskApiService.getTasksByListId(this.listId()!).subscribe((tasks: Task[]) => {
+    this.taskApiService.getTasksByListId(this.currentPageListId()!).subscribe((tasks: Task[]) => {
       this.tasks.set(tasks)
     })
   }
 
   private setListData(): void {
-    this.listApiService.getListById(this.listId()!).subscribe((list: List) => {
+    this.listsService.getListById(this.currentPageListId()!).subscribe((list: List) => {
       this.list.set(list)
     })
   }
@@ -135,17 +139,9 @@ export class TasksListService {
     })
   }
 
-  private deleteTask(task: Task, snackMessage: string): void {
-    this.taskApiService.deleteTaskById(task._id).subscribe((result: Task) => {
-      this._snackBar.open('Task deleted Succesfully!', 'ok!', {
-        duration: 1500,
-      });
-      this.setTasksData()
-
-    })
-  }
+ 
   private deleteList(list: List, snackMessage: string): void {
-    this.listApiService.deleteListById(list._id).subscribe((list: List) => {
+    this.listsService.deleteListById(list._id).subscribe((list: List) => {
       this._snackBar.open(snackMessage, 'ok!', {
         duration: 1500,
       });
@@ -153,8 +149,7 @@ export class TasksListService {
     })
   }
   private updateList(list: List): void {
-    console.log('list', list)
-    this.listApiService.updateListById(list).subscribe((list: List) => {
+    this.listsService.updateListById(list).subscribe((list: List) => {
       this._snackBar.open(SNACK_MESSAGES.listUpdated, 'ok!', {
         duration: 1500,
       });

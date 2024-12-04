@@ -6,7 +6,7 @@
   <button
     mat-button
     mat-dialog-close
-    (click)="closeDialog(completedTaskEnumEvent.CANCEL)"
+    (click)="closeDialog(dialogEvent.CANCEL)"
   >
     No
   </button>
@@ -14,7 +14,7 @@
     mat-button
     mat-dialog-close
     cdkFocusInitial
-    (click)="closeDialog(completedTaskEnumEvent.ACCEPT)"
+    (click)="closeDialog(dialogEvent.ACCEPT)"
   >
     Ok
   </button>

@@ -2,16 +2,20 @@
   <app-list-header
     [list]="this.list()!"
     (onListEvent)="onListEvent($event)"
-    [resetListForm]="resetListForm()"
+    [listActionCompleted]="listActionCompleted()"
   ></app-list-header>
   <div class="task_list__tasks">
     <app-new-task
-    
       (createNewTask)="onAddNewTask($event)"
-      [resetCreateTaskForm]="resetCreateTaskForm()"
+      [taskActionCompleted]="tasksActionCompleted()"
     ></app-new-task>
     @for (task of tasks(); track $index) {
-    <app-task [hideMoveToDaily]="false" [task]="task" (taskEvent)="onTaskEvent($event)"></app-task>
+    <app-task
+      [task]="task"
+      (taskEvent)="onTaskEvent($event)"
+      [hideMoveToDaily]="false"
+      [taskActionCompleted]="tasksActionCompleted()"
+    ></app-task>
     }
   </div>
 </div>

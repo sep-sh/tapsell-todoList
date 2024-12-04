@@ -2,20 +2,27 @@ export enum FormMode {
   EDIT,
   VIEW,
 }
-
-
-export enum ActionEventType {
-  DELETE = 'DELETE',
-  EDIT = 'EDIT',
-  MOVE_TO_DAILY = 'MOVE_TO_DAILY',
-  CANCEL = 'CANCEL',
-  SUBMIT = 'SUBMIT',
-  STATUS_CHANGE = 'DONE'
+export enum TaskEventType {
+  DELETE,
+  EDIT,
+  MOVE_TO_DAILY,
+  CANCEL,
+  SUBMIT,
+  STATUS_CHANGE,
+  CREATE,
 }
-
 export enum DialogEvent {
   ACCEPT,
   CANCEL
-
+}
+export enum ListEventType {
+  FETCH,
+  DELETE,
+  UPDATE,
+  CREATE,
+}
+export enum ActionStatus {
+  ERROR,
+  SUCCESS
 }
 

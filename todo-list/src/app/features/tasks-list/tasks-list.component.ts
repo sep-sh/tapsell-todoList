@@ -5,7 +5,7 @@ import { Task, TaskEvent } from '../../shared/types/task.type';
 import { TaskComponent } from '../../shared/components/task/task.component';
 import { tap } from 'rxjs';
 import { List, ListEvent } from '../../shared/types/list.type';
-import { ActionEventType } from '../../shared/enums/shared.enum';
+import { TaskEventType } from '../../shared/enums/shared.enum';
 import { NewTaskComponent } from '../../shared/components/new-task/new-task.component';
 import { ListHeaderComponent } from "../../shared/components/list-header/list-header.component";
 @Component({
@@ -25,7 +25,7 @@ export class TasksListComponent implements OnInit {
   constructor(private service: TasksListService, private route: ActivatedRoute) {
     this.list = this.service.list
     this.tasks = this.service.tasks
-    this.listId = this.service.listId
+    this.listId = this.service.currentPageListId
     this.resetCreateTaskForm = this.service.resetCreateTaskForm
     this.resetListForm = this.service.resetListForm
   }
@@ -36,13 +36,13 @@ export class TasksListComponent implements OnInit {
 
   onListEvent(event: ListEvent) {
     switch (event.type) {
-      case ActionEventType.DELETE:
+      case TaskEventType.DELETE:
         this.service.onDeleteListEvent(event.data)
 
         break;
 
 
-      case ActionEventType.SUBMIT:
+      case TaskEventType.SUBMIT:
         this.service.onUpdateListEvent(event.data)
 
         break;
@@ -69,15 +69,15 @@ export class TasksListComponent implements OnInit {
 
   onTaskEvent(event: TaskEvent) {
     switch (event.type) {
-      case ActionEventType.DELETE:
+      case TaskEventType.DELETE:
         this.service.onDeleteTaskEvent(event.data)
         break;
 
-      case ActionEventType.MOVE_TO_DAILY:
+      case TaskEventType.MOVE_TO_DAILY:
         this.service.onMoveToDailyEvent(event.data)
         break;
 
-      case ActionEventType.SUBMIT:
+      case TaskEventType.SUBMIT:
         this.service.onUpdateTaskEvent(event.data)
         break;
 

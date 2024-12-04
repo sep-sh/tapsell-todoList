@@ -13,11 +13,12 @@ export const routes: Routes = [
             (m) => m.MainListComponent
           ),
       },
+
       {
         path: 'list/:id',
         loadComponent: () =>
-          import('./features/tasks-list/tasks-list.component').then(
-            (m) => m.TasksListComponent
+          import('./features/other-list/other-list.component').then(
+            (m) => m.OtherListComponent
           ),
       },
       {

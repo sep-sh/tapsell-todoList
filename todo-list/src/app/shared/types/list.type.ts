@@ -1,4 +1,4 @@
-import { ActionEventType } from "../enums/shared.enum";
+import { TaskEventType, DialogEvent } from "../enums/shared.enum";
 
 export type List = {
   title: string;
@@ -14,6 +14,12 @@ export type ListId = List['_id'];
 
 
 export type ListEvent = {
-  type: ActionEventType,
+  type: TaskEventType,
   data: List
+}
+
+
+export type NewListDialog = {
+  event: DialogEvent,
+  data: Partial<List>
 }

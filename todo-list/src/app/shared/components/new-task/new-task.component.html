@@ -1,5 +1,6 @@
 @if (mode()===viewMode.VIEW) {
 <mat-card
+  [id]="taskViewSize() === 'COMPACT' ? 'compact-view' : 'normal-view'"
   class="placeholder"
   appearance="outlined"
   (click)="onAddNewTaskClick()"
@@ -22,7 +23,10 @@
       <mat-label>description</mat-label>
       <input matInput formControlName="description" />
     </mat-form-field>
-    <app-action-buttons (onAction)="onActionButonsEvent($event)" [acceptButtonDisabled]="acceptButtonDisabled"></app-action-buttons>
+    <app-action-buttons
+      (onAction)="onActionButonsEvent($event)"
+      [acceptButtonDisabled]="acceptButtonDisabled"
+    ></app-action-buttons>
   </mat-card-content>
 </mat-card>
 

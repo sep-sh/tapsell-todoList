@@ -2,7 +2,13 @@
   <app-form-input [mode]="mode()" formControlName="title"></app-form-input>
   <span class="example-spacer"></span>
 
-  @if (mode()===formMode.VIEW) {
+  @if (showCreateNewList() ){
+  <button (click)="onAddNewListButton()" mat-icon-button>
+    <mat-icon>add</mat-icon>
+  </button>
+
+  } @if(list()&& !list().isMain){ @if (mode()===formMode.VIEW) {
+
   <button
     (click)="onDeleteButtonClick()"
     mat-icon-button
@@ -20,5 +26,5 @@
     [acceptButtonDisabled]="acceptButtonDisabled"
   ></app-action-buttons>
 
-  }
+  } }
 </mat-toolbar>

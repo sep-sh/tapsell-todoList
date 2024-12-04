@@ -29,6 +29,9 @@
   align-items: center;
   height: calc(100% - 3.65rem);
   cursor: pointer;
+  button{
+    margin-top: 8px;
+  }
 }
 .sidenav-nav .sidenav-nav-item {
   width: 100%;

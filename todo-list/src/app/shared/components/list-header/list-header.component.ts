@@ -1,12 +1,13 @@
-import { Component, effect, input, output, signal, WritableSignal } from '@angular/core';
+import { Component, input, OnChanges, output, signal, SimpleChanges, WritableSignal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { List, ListEvent } from '../../types/list.type';
 import { FormInputComponent } from "../form-input/form-input.component";
-import { ActionEventType, FormMode } from '../../enums/shared.enum';
+import { TaskEventType, FormMode, ListEventType, ActionStatus } from '../../enums/shared.enum';
 import { ActionButtonsComponent, ActionButtonsEvent } from "../action-buttons/action-buttons.component";
+import { ListActionResult } from '../../types/shared.type';
 
 
 
@@ -18,15 +19,17 @@ import { ActionButtonsComponent, ActionButtonsEvent } from "../action-buttons/ac
   styleUrl: './list-header.component.scss',
   standalone: true
 })
-export class ListHeaderComponent {
-  public resetListForm = input.required<boolean>();
-  List = input.required<List>();
-  onListEvent = output<ListEvent>()
-
+export class ListHeaderComponent implements OnChanges {
   public readonly mode: WritableSignal<FormMode> = signal(FormMode.VIEW);
-  listDefaulValues = signal<List | null>(null)
-  formMode = FormMode
-  listForm: FormGroup
+  public showCreateNewList = input<boolean>(false);
+  public listActionCompleted = input<ListActionResult | null>();
+
+  public list = input.required<List>();
+  public onListEvent = output<ListEvent>()
+  public onAddNewListEvent = output()
+  private listDefaulValues = signal<List | null>(null)
+  public formMode = FormMode
+  public listForm: FormGroup
 
 
   constructor(private fb: FormBuilder) {
@@ -37,23 +40,39 @@ export class ListHeaderComponent {
       isMain: [],
 
     })
-    effect(() => {
-      this.resetListForm()
+
+  }
+
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['list']) {
+      if (this.list()) {
+        this.listDefaulValues.set(this.list())
+        this.listForm.patchValue(this.list());
+      }
+    }
+    else if (changes['listActionCompleted']) {
+      if (this.listActionCompleted()) {
+        this.handleActionComplete()
+      }
+
+    }
+  }
+
+  handleActionComplete() {
+    if (this.listActionCompleted()?.status === ActionStatus.SUCCESS) {
       this.listForm.reset()
       this.mode.set(this.formMode.VIEW)
-    });
 
+    }
+  }
 
-    effect(() => {
-      if (this.List()) {
-        this.listDefaulValues.set(this.List())
-        this.listForm.patchValue(this.List());
-      }
-    });
+  onAddNewListButton() {
+    this.onAddNewListEvent.emit()
   }
 
   onDeleteButtonClick() {
-    this.onListEvent.emit({ type: ActionEventType.DELETE, data: this.listForm.value })
+    this.onListEvent.emit({ type: TaskEventType.DELETE, data: this.listForm.value })
   }
 
 
@@ -67,7 +86,7 @@ export class ListHeaderComponent {
       this.mode.set(this.formMode.VIEW)
     }
     else if (action === ActionButtonsEvent.SUBMIT) {
-      this.onListEvent.emit({ type: ActionEventType.SUBMIT, data: this.listForm.value })
+      this.onListEvent.emit({ type: TaskEventType.SUBMIT, data: this.listForm.value })
     }
   }
 

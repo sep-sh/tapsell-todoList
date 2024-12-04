@@ -12,6 +12,15 @@ export class ListApiService {
   public getAllLists(): Observable<List[]> {
     return this.httpClient.get<List[]>('/api/lists')
   }
+
+  public createNewList(list: Partial<List>): Observable<List> {
+    return this.httpClient.post<List>('/api/lists', list)
+
+  }
+
+
+
+
   public getMainList(): Observable<List> {
     return this.httpClient.get<List>('/api/mainList')
   }

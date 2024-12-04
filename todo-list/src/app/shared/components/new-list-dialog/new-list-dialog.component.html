@@ -1,0 +1,28 @@
+<div [formGroup]="newListForm">
+  <h2 mat-dialog-title>Create new list</h2>
+  <mat-dialog-content>
+    <mat-form-field appearance="fill">
+      <mat-label>title</mat-label>
+      <input matInput [formControlName]="'title'" />
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button
+      mat-button
+      mat-dialog-close
+      (click)="closeDialog(dialogEvent.CANCEL)"
+      [disabled]="acceptButtonDisabled"
+
+    >
+      No
+    </button>
+    <button
+      mat-button
+      mat-dialog-close
+      cdkFocusInitial
+      (click)="closeDialog(dialogEvent.ACCEPT)"
+    >
+      Ok
+    </button>
+  </mat-dialog-actions>
+</div>

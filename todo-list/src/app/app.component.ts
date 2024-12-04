@@ -1,6 +1,7 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { ListsService } from './shared/services/lists.service';
 
 @Component({
   selector: 'app-root',
@@ -9,4 +10,6 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.scss',
   standalone: true,
 })
-export class AppComponent {}
+export class AppComponent {
+  constructor(private listService:ListsService){}
+}

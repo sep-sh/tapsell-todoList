@@ -1,4 +1,4 @@
-import { ActionEventType } from "../enums/shared.enum";
+import { TaskEventType } from "../enums/shared.enum";
 
 export interface Task {
   _id: string;
@@ -14,6 +14,6 @@ export type TaskId = Task['_id'];
 
 
 export type TaskEvent = {
-  type: ActionEventType,
+  type: TaskEventType,
   data: Task
 }

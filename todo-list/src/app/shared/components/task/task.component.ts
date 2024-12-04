@@ -1,4 +1,4 @@
-import { Component, effect, input, output, signal } from '@angular/core';
+import { Component, input, OnChanges, output, signal, SimpleChanges } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { Task, TaskEvent } from '../../types/task.type';
 import {
@@ -7,11 +7,12 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormMode, ActionEventType } from '../../enums/shared.enum';
+import { FormMode, TaskEventType } from '../../enums/shared.enum';
 import { FormInputComponent } from '../form-input/form-input.component';
 import { TaskControlButtonsComponent } from '../task-control-buttons/task-control-buttons.component';
 
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { TaskActionResult } from '../../types/shared.type';
 @Component({
   selector: 'app-task',
   imports: [
@@ -27,8 +28,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 
   standalone: true,
 })
-export class TaskComponent {
+export class TaskComponent implements OnChanges {
   task = input.required<Task>();
+  hideMoveToDaily = input<boolean>(false);
+  taskActionCompleted = input<TaskActionResult | null>();
+
   taskDefaultValues = signal<Task | null>(null)
   taskEvent = output<TaskEvent>()
   taskForm: FormGroup;
@@ -43,35 +47,38 @@ export class TaskComponent {
       list: [],
       date: [],
     })
-    effect(() => {
+
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['task']) {
       if (this.task()) {
         this.taskDefaultValues.set(this.task())
         this.taskForm.patchValue(this.task());
       }
-    });
+    }
   }
 
 
-  onTaskControlButtonsEvent(event: ActionEventType): void {
+  onTaskControlButtonsEvent(event: TaskEventType): void {
     switch (event) {
-      case ActionEventType.DELETE:
+      case TaskEventType.DELETE:
         this.taskEvent.emit({ type: event, data: this.taskForm.value })
         break;
 
-      case ActionEventType.EDIT:
+      case TaskEventType.EDIT:
         this.mode = FormMode.EDIT;
         break;
 
-      case ActionEventType.MOVE_TO_DAILY:
+      case TaskEventType.MOVE_TO_DAILY:
         this.taskEvent.emit({ type: event, data: this.taskForm.value })
         break;
 
-      case ActionEventType.CANCEL:
+      case TaskEventType.CANCEL:
         this.taskForm.patchValue(this.taskDefaultValues()!)
         this.mode = FormMode.VIEW
         break;
 
-      case ActionEventType.SUBMIT:
+      case TaskEventType.SUBMIT:
         this.mode = FormMode.VIEW
         this.taskEvent.emit({ type: event, data: this.taskForm.value })
         break;

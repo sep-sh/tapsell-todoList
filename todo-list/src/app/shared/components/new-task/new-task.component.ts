@@ -1,4 +1,4 @@
-import { Component, effect, input, output, signal, WritableSignal } from '@angular/core';
+import { Component, input, OnChanges, output, signal, SimpleChanges, WritableSignal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -6,10 +6,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Task } from '../../types/task.type';
 import { ActionButtonsComponent, ActionButtonsEvent } from "../action-buttons/action-buttons.component";
+import { CommonModule } from '@angular/common';
+import { TaskActionResult } from '../../types/shared.type';
+import { ActionStatus } from '../../enums/shared.enum';
 
 enum NewTaskViewMode {
   VIEW, CREATE
 }
+export type TaskViewSize = 'COMPACT' | 'NORMAL'
 
 @Component({
   selector: 'app-new-task',
@@ -18,14 +22,18 @@ enum NewTaskViewMode {
     MatFormFieldModule,
     ReactiveFormsModule,
     MatInputModule,
-    ActionButtonsComponent],
+    ActionButtonsComponent,
+    CommonModule],
   templateUrl: './new-task.component.html',
   styleUrl: './new-task.component.scss',
   standalone: true
 })
-export class NewTaskComponent {
+export class NewTaskComponent implements OnChanges {
   public createNewTask = output<Partial<Task>>()
-  public resetCreateTaskForm = input.required<boolean>();
+  public taskActionCompleted = input<TaskActionResult | null>();
+
+
+  public taskViewSize = input<TaskViewSize>('NORMAL');
   public taskForm: FormGroup
   public viewMode = NewTaskViewMode
   public readonly mode: WritableSignal<NewTaskViewMode> = signal(NewTaskViewMode.VIEW);
@@ -37,13 +45,24 @@ export class NewTaskComponent {
       description: ['', Validators.required],
     })
 
-    effect(() => {
-      this.resetCreateTaskForm()
-      this.taskForm.reset()
-      this.mode.set(this.viewMode.VIEW)
-    });
+
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['taskActionCompleted']) {
+      if (this.taskActionCompleted()) {
+        this.handleTaskActionCompleteEvent()
+      }
+
+    }
   }
 
+  handleTaskActionCompleteEvent() {
+    if (this.taskActionCompleted()?.status === ActionStatus.SUCCESS) {
+      this.taskForm.reset()
+      this.mode.set(this.viewMode.VIEW)
+    }
+
+  }
 
   public get acceptButtonDisabled(): boolean {
     return !this.taskForm.valid;

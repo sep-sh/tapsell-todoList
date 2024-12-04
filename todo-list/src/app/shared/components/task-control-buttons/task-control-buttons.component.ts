@@ -2,7 +2,7 @@ import { Component, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { FormMode, ActionEventType } from '../../enums/shared.enum';
+import { FormMode, TaskEventType } from '../../enums/shared.enum';
 import { ActionButtonsComponent, ActionButtonsEvent } from "../action-buttons/action-buttons.component";
 
 
@@ -19,23 +19,24 @@ import { ActionButtonsComponent, ActionButtonsEvent } from "../action-buttons/ac
 
 export class TaskControlButtonsComponent {
   mode = input.required<FormMode>();
+  hideMoveToDaily = input<boolean>(false);
   formMode = FormMode
-  taskControlButtonsEvent = ActionEventType
+  taskControlButtonsEvent = TaskEventType
 
-  taskControlButtonEvent = output<ActionEventType>();
+  taskControlButtonEvent = output<TaskEventType>();
 
-  handleAction(type: ActionEventType): void {
+  handleAction(type: TaskEventType): void {
     this.taskControlButtonEvent.emit(type);
   }
 
   onActionButonsEvent(event: ActionButtonsEvent) {
     if (event === ActionButtonsEvent.SUBMIT) {
-      this.taskControlButtonEvent.emit(ActionEventType.SUBMIT)
+      this.taskControlButtonEvent.emit(TaskEventType.SUBMIT)
 
 
     }
     else if (event === ActionButtonsEvent.CANCEL) {
-      this.taskControlButtonEvent.emit(ActionEventType.CANCEL)
+      this.taskControlButtonEvent.emit(TaskEventType.CANCEL)
     }
   }
 

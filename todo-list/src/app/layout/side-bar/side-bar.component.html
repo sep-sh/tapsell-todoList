@@ -9,7 +9,7 @@
     }
   </div>
   <div class="sidenav-nav">
-    @for (item of sideBarService.sideBarLinks()  ; track $index) {
+    @for (item of sideBarLinks() ; track $index) {
     <li class="sidenav-nav-item">
       <a
         class="sidenav-nav-link"
@@ -24,5 +24,12 @@
       </a>
     </li>
     }
+    <button
+      mat-mini-fab
+      matTooltip="create new list"
+      (click)="onCreateNewListButtonClick()"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
   </div>
 </div>

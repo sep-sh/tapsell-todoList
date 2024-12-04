@@ -1,2 +1,22 @@
-<p>main-list works!</p>
-<h1>totototototo</h1>
+<div class="main_list">
+  <app-list-header
+    [list]="this.list()!"
+    [showCreateNewList]="true"
+    (onAddNewListEvent)="onAddNewListEvent()"
+    class="main_list__header"
+  ></app-list-header>
+  <div class="main_list__tasks">
+    <app-new-task
+      (createNewTask)="onAddNewTask($event)"
+      [taskActionCompleted]="tasksActionCompleted()"
+    ></app-new-task>
+    @for (task of tasks(); track $index) {
+    <app-task
+      [hideMoveToDaily]="true"
+      [task]="task"
+      (taskEvent)="onTaskEvent($event)"
+      [taskActionCompleted]="tasksActionCompleted()"
+    ></app-task>
+    }
+  </div>
+</div>

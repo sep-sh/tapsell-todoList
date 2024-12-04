@@ -1,7 +1,8 @@
-import { Injectable, signal } from '@angular/core';
-import { ListApiService } from '../../../shared/services/http/list-api.service';
+import { computed, Injectable, Signal } from '@angular/core';
 import { List } from '../../../shared/types/list.type';
 import { sideBarLink } from '../types/layout.type';
+import { ListsService } from '../../../shared/services/lists.service';
+import { NewListDialogService } from '../../../shared/services/new-list-dialog.service';
 
 const SIDEBAR_MAIN_ITEMS: sideBarLink[] = [
   {
@@ -21,18 +22,17 @@ const SIDEBAR_MAIN_ITEMS: sideBarLink[] = [
   providedIn: 'root'
 })
 export class SideBarService {
-  readonly sideBarLinks = signal<sideBarLink[]>([]);
+  readonly otherLists: Signal<List[]>;
+  readonly sideBarLinks = computed(() =>
+    this.generateSidebarLinks(this.otherLists())
+  );
 
-  constructor(private listApiService: ListApiService) {
-    this.loadSidebarLinks()
-
+  constructor(private listsService: ListsService, private newListDialogService: NewListDialogService) {
+    this.otherLists = this.listsService.otherLists
   }
 
-  public loadSidebarLinks(): void {
-    this.listApiService.getAllLists().subscribe((lists: List[]) => {
-      this.sideBarLinks.set(this.generateSidebarLinks(lists))
-
-    })
+  createNewList() {
+    this.newListDialogService.open()
   }
 
 
