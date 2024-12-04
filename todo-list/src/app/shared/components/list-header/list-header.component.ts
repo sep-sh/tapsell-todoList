@@ -3,11 +3,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { List, ListEvent } from '../../types/list.type';
 import { FormInputComponent } from "../form-input/form-input.component";
 import { TaskEventType, FormMode, ActionStatus } from '../../enums/shared.enum';
 import { ActionButtonsComponent, ActionButtonsEvent } from "../action-buttons/action-buttons.component";
-import { ListActionResult } from '../../types/shared.type';
+import { List, ListActionResult, ListEvent } from '../../types/shared.type';
 
 
 

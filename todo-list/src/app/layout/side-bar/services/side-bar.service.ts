@@ -1,8 +1,8 @@
 import { computed, Injectable, Signal } from '@angular/core';
-import { List } from '../../../shared/types/list.type';
 import { sideBarLink } from '../types/layout.type';
 import { ListsService } from '../../../core/services/lists.service';
 import { NewListDialogService } from '../../../shared/services/new-list-dialog.service';
+import { List } from '../../../shared/types/shared.type';
 
 const SIDEBAR_MAIN_ITEMS: sideBarLink[] = [
   {

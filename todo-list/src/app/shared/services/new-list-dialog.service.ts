@@ -2,8 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogEvent } from '../enums/shared.enum';
 import { NewListDialogComponent } from '../components/new-list-dialog/new-list-dialog.component';
-import { NewListDialog } from '../types/list.type';
 import { ListsService } from '../../core/services/lists.service';
+import { NewListDialog } from '../types/shared.type';
 
 @Injectable()
 export class NewListDialogService {

@@ -1,9 +1,8 @@
 import { Injectable, signal, Signal, WritableSignal } from '@angular/core';
 import { OtherListsListService } from './other-lists-list.service';
-import { List, ListId } from '../../../shared/types/list.type';
 import { OtherListsTaskService } from './other-lists-task.service';
-import { Task } from '../../../shared/types/task.type';
-import { ListActionResult, TaskActionResult } from '../../../shared/types/shared.type';
+import { List, ListActionResult, ListId, Task, TaskActionResult } from '../../../shared/types/shared.type';
+import { TasksFetchMode } from '../../../shared/enums/shared.enum';
 
 @Injectable()
 export class OtherListService {
@@ -21,22 +20,22 @@ export class OtherListService {
 
   public initialize(listId: ListId) {
     this.currentListId.set(listId)
-    this.listService.initialize(listId)
-    this.tasksService.initialize(listId)
+    this.listService.setLists(listId)
+    this.tasksService.setTasks(TasksFetchMode.WITH_ID, listId)
   }
 
 
   public onCreateNewTaskEvent(task: Partial<Task>) {
     this.tasksService.createTask(task, this.list()?._id!).subscribe((result: TaskActionResult) => {
       this.tasksActionCompleted.set(result)
-      this.tasksService.initialize(this.currentListId()!)
+      this.tasksService.setTasks(TasksFetchMode.WITH_ID, this.currentListId()!)
     })
   }
 
   public onDeleteListEvent(list: List) {
     this.listService.confirmAndDeleteList(list).subscribe((result: ListActionResult) => {
       this.listActionCompleted.set(result)
-      this.listService.initialize(this.currentListId()!)
+      this.listService.setLists(this.currentListId()!)
 
     })
   }
@@ -44,14 +43,14 @@ export class OtherListService {
   public onUpdateListEvent(list: List) {
     this.listService.updateList(list).subscribe((result: ListActionResult) => {
       this.listActionCompleted.set(result)
-      this.listService.initialize(this.currentListId()!)
+      this.listService.setLists(this.currentListId()!)
     })
   }
 
   public onDeleteTaskEvent(task: Task) {
     this.tasksService.confirmAndDeleteTask(task).subscribe((result: TaskActionResult) => {
       this.tasksActionCompleted.set(result)
-      this.tasksService.initialize(this.currentListId()!)
+      this.tasksService.setTasks(TasksFetchMode.WITH_ID, this.currentListId()!)
 
     })
   }
@@ -59,14 +58,14 @@ export class OtherListService {
   public onMoveTaskToDailyListEvent(task: Task) {
     this.tasksService.moveTaskToDaily(task, this.listService.mainList()?._id!).subscribe((result: TaskActionResult) => {
       this.tasksActionCompleted.set(result)
-      this.tasksService.initialize(this.currentListId()!)
+      this.tasksService.setTasks(TasksFetchMode.WITH_ID, this.currentListId()!)
 
     })
   }
   public onUpdateTaskEvent(task: Task) {
     this.tasksService.updateTask(task).subscribe((result: TaskActionResult) => {
       this.tasksActionCompleted.set(result)
-      this.tasksService.initialize(this.currentListId()!)
+      this.tasksService.setTasks(TasksFetchMode.WITH_ID, this.currentListId()!)
 
     })
   }

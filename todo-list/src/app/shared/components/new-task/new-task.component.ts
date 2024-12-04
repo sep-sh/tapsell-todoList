@@ -4,10 +4,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { Task } from '../../types/task.type';
 import { ActionButtonsComponent, ActionButtonsEvent } from "../action-buttons/action-buttons.component";
 import { CommonModule } from '@angular/common';
-import { TaskActionResult } from '../../types/shared.type';
+import { Task, TaskActionResult } from '../../types/shared.type';
 import { ActionStatus } from '../../enums/shared.enum';
 
 enum NewTaskViewMode {

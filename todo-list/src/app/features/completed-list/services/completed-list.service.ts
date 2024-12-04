@@ -1,45 +1,29 @@
-import { inject, Injectable, signal } from '@angular/core';
-import { TaskApiService } from '../../../shared/services/http/task-api.service';
-import { Task } from '../../../shared/types/task.type';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog } from '@angular/material/dialog';
-import { DeleteTaskDialogComponent } from '../../../shared/components/delete-dialog/delete-completed-task-dialog.component';
-import { DialogEvent } from '../../../shared/enums/shared.enum';
+import { Injectable, Signal, signal, WritableSignal } from '@angular/core';
+import { TasksFetchMode } from '../../../shared/enums/shared.enum';
+import { CompletedListTaskService } from './completed-list-task.service';
+import { Task, TaskActionResult } from '../../../shared/types/shared.type';
 
 @Injectable()
 
 export class CompletedListService {
-  public readonly completedTasks = signal<Task[]>([]);
-  private _snackBar = inject(MatSnackBar);
-  readonly dialog = inject(MatDialog);
+  readonly tasks: Signal<Task[]>;
+  readonly tasksActionCompleted: WritableSignal<TaskActionResult | null> = signal<TaskActionResult | null>(null);
 
-  constructor(private taskApiService: TaskApiService) { }
 
-  public fetchPageData(): void {
-    this.taskApiService.getCompletedTasks().subscribe((tasks: Task[]) => {
-      this.completedTasks.set(tasks)
-    })
+
+  constructor(private taskService: CompletedListTaskService) {
+    this.tasks = this.taskService.tasks
   }
 
-  public onDeleteTask(task: Task): void {
-    const dialogRef = this.dialog.open(DeleteTaskDialogComponent, {
-      data: task
-    });
-
-    dialogRef.afterClosed().subscribe((result: DialogEvent) => {
-      if (result === DialogEvent.ACCEPT) {
-        this.deleteTask(task)
-      }
-    });
+  public initialize(): void {
+    this.taskService.setTasks(TasksFetchMode.COMPLETED)
   }
 
+  public onDeleteTaskEvent(task: Task) {
+    this.taskService.confirmAndDeleteTask(task).subscribe((result: TaskActionResult) => {
+      this.tasksActionCompleted.set(result)
+      this.taskService.setTasks(TasksFetchMode.COMPLETED)
 
-  private deleteTask(task: Task): void {
-    this.taskApiService.deleteTaskById(task._id).subscribe((res: Task) => {
-      this._snackBar.open('Task deleted Succesfully!', 'ok!', {
-        duration: 1500,
-      });
-      this.fetchPageData()
     })
   }
 }

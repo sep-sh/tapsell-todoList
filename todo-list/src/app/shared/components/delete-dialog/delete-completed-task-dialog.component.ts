@@ -9,8 +9,7 @@ import {
 } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { DialogEvent } from '../../enums/shared.enum';
-import { Task } from '../../types/task.type';
-import { List } from '../../types/list.type';
+import { List, Task } from '../../types/shared.type';
 @Component({
   selector: 'app-delete-completed-task-dialog',
   imports: [MatButtonModule, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent],

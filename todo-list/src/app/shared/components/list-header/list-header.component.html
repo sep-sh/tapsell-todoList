@@ -1,6 +1,6 @@
 <mat-toolbar [formGroup]="listForm">
   <app-form-input [mode]="mode()" formControlName="title"></app-form-input>
-  <span class="example-spacer"></span>
+  <span id="list_header_space"></span>
 
   @if (showCreateNewList() ){
   <button (click)="onAddNewListButton()" mat-icon-button>
@@ -12,11 +12,10 @@
   <button
     (click)="onDeleteButtonClick()"
     mat-icon-button
-    class="example-icon favorite-icon"
   >
     <mat-icon>delete</mat-icon>
   </button>
-  <button (click)="onEditButtonClick()" mat-icon-button class="example-icon">
+  <button (click)="onEditButtonClick()" mat-icon-button>
     <mat-icon>edit</mat-icon>
   </button>
 

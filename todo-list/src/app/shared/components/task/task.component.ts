@@ -1,6 +1,5 @@
 import { Component, input, OnChanges, output, signal, SimpleChanges } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { Task, TaskEvent } from '../../types/task.type';
 import {
   FormBuilder,
   FormGroup,
@@ -12,7 +11,7 @@ import { FormInputComponent } from '../form-input/form-input.component';
 import { TaskControlButtonsComponent } from '../task-control-buttons/task-control-buttons.component';
 
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { TaskActionResult } from '../../types/shared.type';
+import { Task, TaskActionResult, TaskEvent } from '../../types/shared.type';
 @Component({
   selector: 'app-task',
   imports: [

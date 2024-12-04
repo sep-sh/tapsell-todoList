@@ -26,3 +26,7 @@ export enum ActionStatus {
   SUCCESS
 }
 
+export enum TasksFetchMode {
+  COMPLETED,
+  WITH_ID
+}

@@ -14,17 +14,11 @@
     width: 100%;
   }
 
-  
   &__tasks {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
     width: 100%;
+  }
 
-  
-  }
-  &__empty {
-    width: 100%;
-    padding: 16px;
-  }
 }

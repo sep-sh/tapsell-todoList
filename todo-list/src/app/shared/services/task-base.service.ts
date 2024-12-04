@@ -1,14 +1,12 @@
 import { inject, signal, WritableSignal } from "@angular/core";
 import { ITasksService } from "../interfaces/tasks-list.interface";
-import { TaskActionResult } from "../types/shared.type";
-import { Task } from "../types/task.type";
+import { ListId, Task, TaskActionResult } from "../types/shared.type";
 import { MatDialog } from "@angular/material/dialog";
 import { DeleteTaskDialogComponent } from "../components/delete-dialog/delete-completed-task-dialog.component";
-import { ActionStatus, DialogEvent, TaskEventType } from "../enums/shared.enum";
+import { ActionStatus, DialogEvent, TaskEventType, TasksFetchMode } from "../enums/shared.enum";
 import { SNACK_SUCCESS_MESSAGES } from "../constants/snack.constant";
 import { TaskApiService } from "./http/task-api.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { ListId } from "../types/list.type";
 import { EMPTY, map, Observable, switchMap } from "rxjs";
 
 export class TaskBaseService implements ITasksService {
@@ -45,8 +43,20 @@ export class TaskBaseService implements ITasksService {
     );
   }
 
-  initialize(listId: ListId): void {
-    this.setTasksData(listId)
+  setTasks(fetchMode: TasksFetchMode, listId?: ListId): void {
+    if (fetchMode === TasksFetchMode.WITH_ID) {
+      this.setTasksData(listId!)
+    }
+    else if (fetchMode === TasksFetchMode.COMPLETED) {
+      this.setCompletedTasks()
+
+    }
+  }
+
+  private setCompletedTasks() {
+    this.taskApiService.getCompletedTasks().subscribe((tasks: Task[]) => {
+      this.tasks.set(tasks)
+    })
   }
 
   private setTasksData(listId: ListId): void {

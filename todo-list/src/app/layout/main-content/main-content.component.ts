@@ -10,13 +10,5 @@ import { RouterOutlet } from '@angular/router';
   standalone: true,
 })
 export class MainContentComponent {
-  isLeftSidebarCollapsed = input.required<boolean>();
-  screenWidth = input.required<number>();
-  sizeClass = computed(() => {
-    const isLeftSidebarCollapsed = this.isLeftSidebarCollapsed();
-    if (isLeftSidebarCollapsed) {
-      return '';
-    }
-    return this.screenWidth() > 768 ? 'body-trimmed' : 'body-md-screen';
-  });
+
 }

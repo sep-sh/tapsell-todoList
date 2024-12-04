@@ -1,9 +1,8 @@
 import { Injectable, Signal, signal, WritableSignal } from '@angular/core';
-import { List } from '../../../shared/types/list.type';
-import { Task } from '../../../shared/types/task.type';
 import { MainListTaskService } from './main-list-task.service';
 import { MainListListService } from './main-list-list.service';
-import { ListActionResult, TaskActionResult } from '../../../shared/types/shared.type';
+import { List, ListActionResult, Task, TaskActionResult } from '../../../shared/types/shared.type';
+import { TasksFetchMode } from '../../../shared/enums/shared.enum';
 
 @Injectable()
 export class MainListService {
@@ -20,22 +19,22 @@ export class MainListService {
   }
 
   public initialize() {
-    this.listsService.initialize(this.mainList()?._id!)
-    this.taskService.initialize(this.mainList()?._id!)
+    this.listsService.setLists(this.mainList()?._id!)
+    this.taskService.setTasks(TasksFetchMode.WITH_ID, this.mainList()?._id!)
   }
 
 
   onCreateNewTaskEvent(task: Partial<Task>) {
     this.taskService.createTask(task, this.mainList()?._id!).subscribe((result: TaskActionResult) => {
       this.tasksActionCompleted.set(result)
-      this.taskService.initialize(this.mainList()?._id!)
+      this.taskService.setTasks(TasksFetchMode.WITH_ID, this.mainList()?._id!)
     })
   }
 
   onDeleteTaskEvent(task: Task) {
     this.taskService.confirmAndDeleteTask(task).subscribe((result: TaskActionResult) => {
       this.tasksActionCompleted.set(result)
-      this.taskService.initialize(this.mainList()?._id!)
+      this.taskService.setTasks(TasksFetchMode.WITH_ID, this.mainList()?._id!)
 
     })
   }
@@ -43,7 +42,7 @@ export class MainListService {
   onUpdateTaskEvent(task: Task) {
     this.taskService.updateTask(task).subscribe((result: TaskActionResult) => {
       this.tasksActionCompleted.set(result)
-      this.taskService.initialize(this.mainList()?._id!)
+      this.taskService.setTasks(TasksFetchMode.WITH_ID, this.mainList()?._id!)
 
     })
   }

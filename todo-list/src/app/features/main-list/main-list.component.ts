@@ -1,12 +1,10 @@
 import { Component, OnInit, Signal } from '@angular/core';
 import { MainListService } from './services/main-list.service';
-import { Task, TaskEvent } from '../../shared/types/task.type';
-import { List } from '../../shared/types/list.type';
 import { ListHeaderComponent } from "../../shared/components/list-header/list-header.component";
 import { NewTaskComponent } from "../../shared/components/new-task/new-task.component";
 import { TaskComponent } from "../../shared/components/task/task.component";
 import { TaskEventType } from '../../shared/enums/shared.enum';
-import { ListActionResult, TaskActionResult } from '../../shared/types/shared.type';
+import { List, ListActionResult, Task, TaskActionResult, TaskEvent } from '../../shared/types/shared.type';
 import { MainListTaskService } from './services/main-list-task.service';
 import { MainListListService } from './services/main-list-list.service';
 import { NewListDialogService } from '../../shared/services/new-list-dialog.service';
@@ -47,9 +45,7 @@ export class MainListComponent implements OnInit {
 
   onAddNewListEvent() {
     this.service.addNewListEvent()
-
   }
-
 
   onTaskEvent(event: TaskEvent) {
     switch (event.type) {

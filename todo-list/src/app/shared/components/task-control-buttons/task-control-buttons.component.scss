@@ -2,15 +2,8 @@
   display: flex;
   flex-direction: row;
   gap: 8px;
-}
-
-.danger_btn {
-  background-color: var(--mat-sys-error);
-  color: var(--mat-sys-on-error);
-}
-
-
-.error_btn {
-  background-color: var(--mat-sys-error-container);
-  color: var(--mat-sys-on-error-container);
+  .danger_btn {
+    background-color: var(--mat-sys-error);
+    color: var(--mat-sys-on-error);
+  }
 }

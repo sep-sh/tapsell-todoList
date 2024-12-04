@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
-import { List, ListId } from '../../shared/types/list.type';
 import { ListApiService } from '../../shared/services/http/list-api.service';
 import { Observable, tap } from 'rxjs';
+import { List, ListId } from '../../shared/types/shared.type';
 
 @Injectable({
   providedIn: 'root'
@@ -14,13 +14,13 @@ export class ListsService {
     this.fetchLists()
   }
 
-  createNewList(list: Partial<List>) {
+  public createNewList(list: Partial<List>): void {
     this.listApiService.createNewList(list).subscribe((list: List) => {
       this.fetchLists()
     })
   }
 
-  fetchLists() {
+  private fetchLists(): void {
     this.listApiService.getAllLists().subscribe((lists: List[]) => {
       const mainList = lists.find((list: List) => list.isMain)
       this.mainList.set(mainList)

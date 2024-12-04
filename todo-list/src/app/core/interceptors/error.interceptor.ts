@@ -10,7 +10,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     constructor(private _snackBar: MatSnackBar) { }
 
-    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<unknown>> {
         return next.handle(req).pipe(
             catchError((error: HttpErrorResponse) => {
                 this.handleError(error);
@@ -21,7 +21,6 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     private handleError(error: HttpErrorResponse): void {
         let errorMessage = SNACK_ERROR_MESSAGES.unknownError;
-
         switch (error.status) {
             case 0:
                 errorMessage = SNACK_ERROR_MESSAGES.error0;

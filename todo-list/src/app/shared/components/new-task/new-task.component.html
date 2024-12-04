@@ -1,11 +1,11 @@
 @if (mode()===viewMode.VIEW) {
 <mat-card
   [id]="taskViewSize() === 'COMPACT' ? 'compact-view' : 'normal-view'"
-  class="placeholder"
+  class="new_task"
   appearance="outlined"
   (click)="onAddNewTaskClick()"
 >
-  <mat-card-content class="placeholder__content">
+  <mat-card-content class="new_task__content">
     <mat-icon>add_circle</mat-icon>
     <div>Add new task</div>
   </mat-card-content>

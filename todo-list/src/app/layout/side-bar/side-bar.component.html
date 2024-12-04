@@ -1,32 +1,25 @@
-<div
-  class="sidenav"
-  [ngClass]="isLeftSidebarCollapsed() ? 'sidenav-collapsed' : ''"
->
-  <div class="logo-container">
-    <button class="logo" (click)="toggleCollapse()"></button>
-    @if (!isLeftSidebarCollapsed()) {
-    <div class="logo-text">Tapsell</div>
-    }
+<div class="sidenav">
+  <div class="sidenav__logo_container">
+    <h2>Tapsell</h2>
   </div>
-  <div class="sidenav-nav">
-    @for (item of sideBarLinks() ; track $index) {
-    <li class="sidenav-nav-item">
-      <a
-        class="sidenav-nav-link"
+  <div class="sidenav__items_container">
+    <div
+      *ngFor="let item of sideBarLinks(); track: $Index"
+      class="sidenav__item"
+    >
+      <div
+        class="sidenav__item__link"
         [routerLink]="item.routeLink"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
       >
-        <mat-icon fontIcon="{{ item.icon }}"></mat-icon>
-        @if (!isLeftSidebarCollapsed()) {
-        <span class="sidenav-link-text">{{ item.label }}</span>
-        }
-      </a>
-    </li>
-    }
+        <mat-icon>{{ item.icon }}</mat-icon>
+        <span class="sidenav__item__text">{{ item.label }}</span>
+      </div>
+    </div>
     <button
       mat-mini-fab
-      matTooltip="create new list"
+      matTooltip="Create New List"
       (click)="onCreateNewListButtonClick()"
     >
       <mat-icon>add</mat-icon>

@@ -1,9 +1,9 @@
 import { Component, OnInit, Signal } from '@angular/core';
-import { Task } from '../../shared/types/task.type';
 import { CompletedListService } from './services/completed-list.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
+import { Task } from '../../shared/types/shared.type';
 @Component({
   selector: 'app-completed-list',
   imports: [MatTableModule, MatButtonModule, MatIconModule],
@@ -14,18 +14,19 @@ import { MatTableModule } from '@angular/material/table';
 })
 export class CompletedListComponent implements OnInit {
   public displayedColumns: string[] = ['title', 'description', 'delete']
-  public readonly completedTasks: Signal<Task[]>;
+  readonly tasks: Signal<Task[]>;
+
 
   constructor(private service: CompletedListService) {
-    this.completedTasks = this.service.completedTasks
+    this.tasks = this.service.tasks
   }
 
   public ngOnInit(): void {
-    this.service.fetchPageData()
+    this.service.initialize()
   }
 
   public onDeleteTaskButtonClick(task: Task): void {
-    this.service.onDeleteTask(task)
+    this.service.onDeleteTaskEvent(task)
   }
 
 

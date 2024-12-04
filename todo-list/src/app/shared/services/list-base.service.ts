@@ -1,12 +1,11 @@
 import { WritableSignal, inject, signal } from "@angular/core";
 import { IListsService } from "../interfaces/tasks-list.interface";
-import { List, ListId } from "../types/list.type";
 import { ListsService } from "../../core/services/lists.service";
 import { SNACK_SUCCESS_MESSAGES } from "../constants/snack.constant";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
 import { ActionStatus, DialogEvent, ListEventType } from "../enums/shared.enum";
-import { ListActionResult } from "../types/shared.type";
+import { List, ListActionResult, ListId } from "../types/shared.type";
 import { NewListDialogService } from "./new-list-dialog.service";
 import { DeleteTaskDialogComponent } from "../components/delete-dialog/delete-completed-task-dialog.component";
 import { MatDialog } from "@angular/material/dialog";
@@ -35,7 +34,7 @@ export class BaseListService implements IListsService {
   }
 
 
-  initialize(listId: ListId) {
+  setLists(listId: ListId) {
     this.currentPageListId.set(listId)
     if (!this.currentPageListId()) { return }
     this.listsService.getListById(this.currentPageListId()!).subscribe((list: List) => {
