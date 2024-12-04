@@ -1,12 +1,11 @@
-import { Component, effect, input, OnChanges, output, Signal, signal, SimpleChanges, WritableSignal } from '@angular/core';
+import { Component, effect, input, output, signal, WritableSignal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { Task } from '../../types/task.type';
+import { ActionButtonsComponent, ActionButtonsEvent } from "../action-buttons/action-buttons.component";
 
 enum NewTaskViewMode {
   VIEW, CREATE
@@ -15,17 +14,16 @@ enum NewTaskViewMode {
 @Component({
   selector: 'app-new-task',
   imports: [MatCardModule,
-    MatButtonModule, MatIconModule,
+    MatIconModule,
     MatFormFieldModule,
     ReactiveFormsModule,
     MatInputModule,
-    MatTooltipModule,
-  ],
+    ActionButtonsComponent],
   templateUrl: './new-task.component.html',
   styleUrl: './new-task.component.scss',
   standalone: true
 })
-export class NewTaskComponent implements OnChanges {
+export class NewTaskComponent {
   public createNewTask = output<Partial<Task>>()
   public resetCreateTaskForm = input.required<boolean>();
   public taskForm: FormGroup
@@ -44,24 +42,8 @@ export class NewTaskComponent implements OnChanges {
       this.taskForm.reset()
       this.mode.set(this.viewMode.VIEW)
     });
-
-
   }
 
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log('changes', changes)
-
-  }
-
-  public onCancelButtonClicked(): void {
-    this.mode.set(this.viewMode.VIEW)
-    this.taskForm.reset()
-  }
-
-  public onSubmitButtonClicked(): void {
-    this.createNewTask.emit(this.taskForm.value)
-  }
 
   public get acceptButtonDisabled(): boolean {
     return !this.taskForm.valid;
@@ -70,5 +52,18 @@ export class NewTaskComponent implements OnChanges {
 
   public onAddNewTaskClick(): void {
     this.mode.set(this.viewMode.CREATE)
+  }
+
+
+  onActionButonsEvent(event: ActionButtonsEvent) {
+    if (event === ActionButtonsEvent.SUBMIT) {
+      this.createNewTask.emit(this.taskForm.value)
+
+
+    }
+    else if (event === ActionButtonsEvent.CANCEL) {
+      this.mode.set(this.viewMode.VIEW)
+      this.taskForm.reset()
+    }
   }
 }

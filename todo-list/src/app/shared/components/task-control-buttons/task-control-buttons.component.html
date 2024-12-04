@@ -24,21 +24,10 @@
     <mat-icon>delete</mat-icon>
   </button>
   } @else if (mode()===formMode.EDIT) {
-  <button
-    mat-mini-fab
-    (click)="handleAction(taskControlButtonsEvent.CANCEL)"
-    matTooltip="cancel the task"
-    class="error_btn"
-  >
-    <mat-icon>cancel</mat-icon>
-  </button>
-  <button
-    mat-mini-fab
-    (click)="handleAction(taskControlButtonsEvent.SUBMIT)"
-    matTooltip="accept the edits "
-  >
-    <mat-icon>check</mat-icon>
-  </button>
+
+  <app-action-buttons
+    (onAction)="onActionButonsEvent($event)"
+  ></app-action-buttons>
 
   }
 </div>

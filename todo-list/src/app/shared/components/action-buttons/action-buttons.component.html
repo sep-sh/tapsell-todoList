@@ -1,0 +1,18 @@
+<div class="action_buttons">
+  <button
+    mat-mini-fab
+    matTooltip="cancel the task"
+    class="error_btn"
+    (click)="onButtonsAction(buttonEvents.CANCEL)"
+  >
+    <mat-icon>cancel</mat-icon>
+  </button>
+  <button
+    [disabled]="acceptButtonDisabled()"
+    mat-mini-fab
+    matTooltip="accept the edits "
+    (click)="onButtonsAction(buttonEvents.SUBMIT)"
+  >
+    <mat-icon>check</mat-icon>
+  </button>
+</div>

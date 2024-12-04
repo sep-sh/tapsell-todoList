@@ -22,24 +22,7 @@
       <mat-label>description</mat-label>
       <input matInput formControlName="description" />
     </mat-form-field>
-    <div class="create_task_container__buttons">
-      <button
-        mat-mini-fab
-        matTooltip="cancel the task"
-        class="error_btn"
-        (click)="onCancelButtonClicked()"
-      >
-        <mat-icon>cancel</mat-icon>
-      </button>
-      <button
-        [disabled]="acceptButtonDisabled"
-        mat-mini-fab
-        matTooltip="accept the edits "
-        (click)="onSubmitButtonClicked()"
-      >
-        <mat-icon>check</mat-icon>
-      </button>
-    </div>
+    <app-action-buttons (onAction)="onActionButonsEvent($event)" [acceptButtonDisabled]="acceptButtonDisabled"></app-action-buttons>
   </mat-card-content>
 </mat-card>
 

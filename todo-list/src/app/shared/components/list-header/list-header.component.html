@@ -1,6 +1,8 @@
-<mat-toolbar>
-  <span>My App</span>
+<mat-toolbar [formGroup]="listForm">
+  <app-form-input [mode]="mode()" formControlName="title"></app-form-input>
   <span class="example-spacer"></span>
+
+  @if (mode()===formMode.VIEW) {
   <button
     (click)="onDeleteButtonClick()"
     mat-icon-button
@@ -11,4 +13,12 @@
   <button (click)="onEditButtonClick()" mat-icon-button class="example-icon">
     <mat-icon>edit</mat-icon>
   </button>
+
+  } @else if (mode() ===formMode.EDIT) {
+  <app-action-buttons
+    (onAction)="onActionButonsEvent($event)"
+    [acceptButtonDisabled]="acceptButtonDisabled"
+  ></app-action-buttons>
+
+  }
 </mat-toolbar>

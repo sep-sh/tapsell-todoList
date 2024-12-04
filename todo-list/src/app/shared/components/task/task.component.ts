@@ -1,4 +1,4 @@
-import { Component, effect, input, output } from '@angular/core';
+import { Component, effect, input, output, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { Task, TaskEvent } from '../../types/task.type';
 import {
@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormMode, TaskEventType } from '../../enums/shared.enum';
+import { FormMode, ActionEventType } from '../../enums/shared.enum';
 import { FormInputComponent } from '../form-input/form-input.component';
 import { TaskControlButtonsComponent } from '../task-control-buttons/task-control-buttons.component';
 
@@ -29,6 +29,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 })
 export class TaskComponent {
   task = input.required<Task>();
+  taskDefaultValues = signal<Task | null>(null)
   taskEvent = output<TaskEvent>()
   taskForm: FormGroup;
   mode: FormMode = FormMode.VIEW;
@@ -44,31 +45,33 @@ export class TaskComponent {
     })
     effect(() => {
       if (this.task()) {
+        this.taskDefaultValues.set(this.task())
         this.taskForm.patchValue(this.task());
       }
     });
   }
 
 
-  onTaskControlButtonsEvent(event: TaskEventType): void {
+  onTaskControlButtonsEvent(event: ActionEventType): void {
     switch (event) {
-      case TaskEventType.DELETE:
+      case ActionEventType.DELETE:
         this.taskEvent.emit({ type: event, data: this.taskForm.value })
         break;
 
-      case TaskEventType.EDIT:
+      case ActionEventType.EDIT:
         this.mode = FormMode.EDIT;
         break;
 
-      case TaskEventType.MOVE_TO_DAILY:
+      case ActionEventType.MOVE_TO_DAILY:
         this.taskEvent.emit({ type: event, data: this.taskForm.value })
         break;
 
-      case TaskEventType.CANCEL:
+      case ActionEventType.CANCEL:
+        this.taskForm.patchValue(this.taskDefaultValues()!)
         this.mode = FormMode.VIEW
         break;
 
-      case TaskEventType.SUBMIT:
+      case ActionEventType.SUBMIT:
         this.mode = FormMode.VIEW
         this.taskEvent.emit({ type: event, data: this.taskForm.value })
         break;

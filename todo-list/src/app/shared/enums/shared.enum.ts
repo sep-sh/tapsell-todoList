@@ -1,11 +1,10 @@
 export enum FormMode {
   EDIT,
   VIEW,
-  CREATE
 }
 
 
-export enum TaskEventType {
+export enum ActionEventType {
   DELETE = 'DELETE',
   EDIT = 'EDIT',
   MOVE_TO_DAILY = 'MOVE_TO_DAILY',
@@ -19,3 +18,4 @@ export enum DialogEvent {
   CANCEL
 
 }
+

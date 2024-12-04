@@ -1,3 +1,5 @@
+import { ActionEventType } from "../enums/shared.enum";
+
 export type List = {
   title: string;
   _id: string;
@@ -8,3 +10,10 @@ export type List = {
 
 
 export type ListId = List['_id'];
+
+
+
+export type ListEvent = {
+  type: ActionEventType,
+  data: List
+}

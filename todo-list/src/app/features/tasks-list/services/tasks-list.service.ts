@@ -8,12 +8,15 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteTaskDialogComponent } from '../../../shared/components/delete-task-dialog/delete-completed-task-dialog.component';
 import { DialogEvent } from '../../../shared/enums/shared.enum';
+import { Router } from '@angular/router';
 
 const SNACK_MESSAGES = {
   taskMovedToDaily: 'Task Moved To Daily List!',
   taskDeleted: 'Task deleted Succesfully!',
   taskUpdated: 'Task Updated Succesfully!',
-  taskCreated: 'Task Created Succesfully!'
+  taskCreated: 'Task Created Succesfully!',
+  listUpdated: 'List Updated Succesfully!',
+  listDeleted: 'List deleted Succesfully!',
 }
 
 @Injectable({
@@ -27,9 +30,10 @@ export class TasksListService {
   public listId: WritableSignal<ListId | null> = signal<ListId | null>(null);
   public mainList: WritableSignal<List | null> = signal<List | null>(null);
   public resetCreateTaskForm: WritableSignal<boolean> = signal<boolean>(false);
+  public resetListForm: WritableSignal<boolean> = signal<boolean>(false);
 
 
-  constructor(private taskApiService: TaskApiService, private listApiService: ListApiService) { }
+  constructor(private taskApiService: TaskApiService, private listApiService: ListApiService, private router: Router) { }
 
 
   public fetchPageData(): void {
@@ -59,6 +63,25 @@ export class TasksListService {
       this.resetCreateTaskForm.set(!this.resetCreateTaskForm())
 
     })
+  }
+
+  public onDeleteListEvent(list: List) {
+    console.log('list', list)
+    const dialogRef = this.dialog.open(DeleteTaskDialogComponent, {
+      data: list
+    });
+    dialogRef.afterClosed().subscribe((result: DialogEvent) => {
+      if (result === DialogEvent.ACCEPT) {
+        console.log('result', result)
+        this.deleteList(list, SNACK_MESSAGES.listDeleted)
+        // this.deleteTask(task, SNACK_MESSAGES.taskDeleted)
+      }
+    });
+
+
+  }
+  public onUpdateListEvent(list: List) {
+    this.updateList(list)
 
   }
 
@@ -121,11 +144,25 @@ export class TasksListService {
 
     })
   }
-
-  moveTaskToDailyList(task: Task) {
-    // TODO
-    // this.taskApiService.
+  private deleteList(list: List, snackMessage: string): void {
+    this.listApiService.deleteListById(list._id).subscribe((list: List) => {
+      this._snackBar.open(snackMessage, 'ok!', {
+        duration: 1500,
+      });
+      this.router.navigate(['']);
+    })
   }
+  private updateList(list: List): void {
+    console.log('list', list)
+    this.listApiService.updateListById(list).subscribe((list: List) => {
+      this._snackBar.open(SNACK_MESSAGES.listUpdated, 'ok!', {
+        duration: 1500,
+      });
+      this.setListData()
 
+      this.resetListForm.set(!this.resetListForm())
+    })
+
+  }
 
 }
