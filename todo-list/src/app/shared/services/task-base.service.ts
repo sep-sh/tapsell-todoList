@@ -9,44 +9,44 @@ import { SNACK_MESSAGES } from "../constants/snack.constant";
 import { TaskApiService } from "./http/task-api.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ListId } from "../types/list.type";
+import { EMPTY, map, Observable, of, switchMap } from "rxjs";
 
 export class TaskBaseService implements ITasksService {
 
   constructor(private taskApiService: TaskApiService) { }
   public tasks: WritableSignal<Task[]> = signal<Task[]>([]);
-  public actionCompleted: WritableSignal<TaskActionResult | null> = signal<TaskActionResult | null>(null);
   private readonly dialog = inject(MatDialog);
   private readonly _snackBar = inject(MatSnackBar);
 
 
-  confirmAndDeleteTask(task: Task): void {
+  confirmAndDeleteTask(task: Task): Observable<TaskActionResult> {
     const dialogRef = this.dialog.open(DeleteTaskDialogComponent, {
       data: task
     });
-    dialogRef.afterClosed().subscribe((result: DialogEvent) => {
-      if (result === DialogEvent.ACCEPT) {
-        this.deleteTask(task)
-      }
-    });
+
+    return dialogRef.afterClosed().pipe(
+      switchMap((result: DialogEvent) => {
+        if (result === DialogEvent.ACCEPT) {
+          return this.deleteTask(task);
+        }
+        return EMPTY;
+      })
+    );
   }
 
-
-  public deleteTask(task: Task) {
-    this.taskApiService.deleteTaskById(task._id).subscribe((result: Task) => {
-      this._snackBar.open(SNACK_MESSAGES.taskDeleted, 'ok!', {
-        duration: 1500,
-      });
-      this.actionCompleted.set({ type: TaskEventType.DELETE, status: ActionStatus.SUCCESS });
-
-    })
+  deleteTask(task: Task): Observable<TaskActionResult> {
+    return this.taskApiService.deleteTaskById(task._id).pipe(
+      map(() => {
+        this._snackBar.open(SNACK_MESSAGES.taskDeleted, 'ok!', {
+          duration: 1500,
+        });
+        return { type: TaskEventType.DELETE, status: ActionStatus.SUCCESS };
+      })
+    );
   }
 
   initialize(listId: ListId): void {
     this.setTasksData(listId)
-  }
-
-  fetchTasks(): void {
-
   }
 
   private setTasksData(listId: ListId): void {
@@ -55,41 +55,41 @@ export class TaskBaseService implements ITasksService {
     })
   }
 
-
-
-  createTask(task: Partial<Task>, listId: ListId): void {
-    const newTask = { ...task, list: listId }
-    this.taskApiService.postTask(newTask).subscribe(task => {
-      this._snackBar.open(SNACK_MESSAGES.taskCreated, 'ok!', {
-        duration: 1500,
-      });
-
-      this.actionCompleted.set({ type: TaskEventType.CREATE, status: ActionStatus.SUCCESS });
-
-    })
+  createTask(task: Partial<Task>, listId: ListId): Observable<TaskActionResult> {
+    const newTask = { ...task, list: listId };
+    return this.taskApiService.postTask(newTask).pipe(
+      map(() => {
+        this._snackBar.open(SNACK_MESSAGES.taskCreated, 'ok!', {
+          duration: 1500,
+        });
+        return { type: TaskEventType.CREATE, status: ActionStatus.SUCCESS };
+      })
+    );
   }
 
 
-  public updateTask(task: Task): void {
-    this.taskApiService.updateTaskById(task).subscribe((result: Task) => {
-      this._snackBar.open(SNACK_MESSAGES.taskUpdated, 'ok!', {
-        duration: 1500,
-      });
-      this.actionCompleted.set({ type: TaskEventType.EDIT, status: ActionStatus.SUCCESS });
-
-    })
+  updateTask(task: Task): Observable<TaskActionResult> {
+    return this.taskApiService.updateTaskById(task).pipe(
+      map(() => {
+        this._snackBar.open(SNACK_MESSAGES.taskUpdated, 'ok!', {
+          duration: 1500,
+        });
+        return { type: TaskEventType.EDIT, status: ActionStatus.SUCCESS };
+      })
+    );
   }
 
 
-  moveTaskToDaily(task: Task, mainListId: ListId): void {
-    task.list = mainListId
-    this.taskApiService.updateTaskById(task).subscribe((result: Task) => {
-      this._snackBar.open(SNACK_MESSAGES.taskMovedToDaily, 'ok!', {
-        duration: 1500,
-      });
-      this.actionCompleted.set({ type: TaskEventType.MOVE_TO_DAILY, status: ActionStatus.SUCCESS });
-
-    })
+  moveTaskToDaily(task: Task, mainListId: ListId): Observable<TaskActionResult> {
+    task.list = mainListId;
+    return this.taskApiService.updateTaskById(task).pipe(
+      map(() => {
+        this._snackBar.open(SNACK_MESSAGES.taskMovedToDaily, 'ok!', {
+          duration: 1500,
+        });
+        return { type: TaskEventType.MOVE_TO_DAILY, status: ActionStatus.SUCCESS };
+      })
+    );
   }
 
 

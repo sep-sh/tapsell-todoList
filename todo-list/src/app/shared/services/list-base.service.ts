@@ -10,6 +10,7 @@ import { ListActionResult } from "../types/shared.type";
 import { NewListDialogService } from "./new-list-dialog.service";
 import { DeleteTaskDialogComponent } from "../components/delete-task-dialog/delete-completed-task-dialog.component";
 import { MatDialog } from "@angular/material/dialog";
+import { EMPTY, map, Observable, switchMap, tap } from "rxjs";
 
 
 export class BaseListService implements IListsService {
@@ -21,7 +22,6 @@ export class BaseListService implements IListsService {
   public list: WritableSignal<List | null> = signal<List | null>(null);
   public currentPageListId: WritableSignal<ListId | null> = signal<ListId | null>(null);
   public mainList: WritableSignal<List | undefined>
-  public actionCompleted: WritableSignal<ListActionResult | null> = signal<ListActionResult | null>(null);
 
   constructor(
     listsService: ListsService,
@@ -43,43 +43,53 @@ export class BaseListService implements IListsService {
     })
   }
 
-  fetchList(): void {
-    throw new Error("Method not implemented.");
-  }
 
-
-
-
-
-  confirmAndDeleteList(list: List): void {
+  confirmAndDeleteList(list: List): Observable<ListActionResult> {
     const dialogRef = this.dialog.open(DeleteTaskDialogComponent, {
       data: list
     });
-    dialogRef.afterClosed().subscribe((result: DialogEvent) => {
-      if (result === DialogEvent.ACCEPT) {
-        this.deleteList(list)
-      }
-    });
+    return dialogRef.afterClosed().pipe(
+      switchMap((result: DialogEvent) => {
+        if (result === DialogEvent.ACCEPT) {
+          return this.deleteList(list);
+        }
+        return EMPTY;
+      })
+    );
   }
 
-  public deleteList(list: List) {
-    this.listsService.deleteListById(list._id).subscribe((list: List) => {
-      this.handleSnackMessage(SNACK_MESSAGES.listDeleted);
-      this.router.navigate(['']);
-      this.actionCompleted.set({ type: ListEventType.DELETE, status: ActionStatus.SUCCESS });
-    });
 
+
+  public deleteList(list: List): Observable<ListActionResult> {
+    return this.listsService.deleteListById(list._id).pipe(
+      tap(() => {
+        this.handleSnackMessage(SNACK_MESSAGES.listDeleted);
+        this.router.navigate(['']);
+      }),
+      map(() => ({
+        type: ListEventType.DELETE,
+        status: ActionStatus.SUCCESS,
+      }))
+    );
   }
 
-  updateList(list: List): void {
-    this.listsService.updateListById(list).subscribe((list: List) => {
-      this.handleSnackMessage(SNACK_MESSAGES.listUpdated);
-      this.actionCompleted.set({ type: ListEventType.UPDATE, status: ActionStatus.SUCCESS });
-    });
+
+  updateList(list: List): Observable<ListActionResult> {
+    return this.listsService.updateListById(list).pipe(
+      tap(() => {
+        this.handleSnackMessage(SNACK_MESSAGES.listUpdated);
+      }),
+      map(() => ({
+        type: ListEventType.UPDATE,
+        status: ActionStatus.SUCCESS,
+      }))
+    );
   }
+
 
   createList(): void {
     this.newListDialogService.open()
+
   }
 
   private handleSnackMessage(message: string, action: string = 'ok!', duration: number = 1500): void {

@@ -13,14 +13,13 @@ export class MainListService {
   public tasks: WritableSignal<Task[]>
   readonly mainList: Signal<List | undefined>;
   public resetCreateTaskForm: WritableSignal<boolean> = signal<boolean>(false);
-  readonly tasksActionCompleted: Signal<TaskActionResult | null>;
-  readonly listActionCompleted: Signal<ListActionResult | null>;
+  readonly tasksActionCompleted: WritableSignal<TaskActionResult | null> = signal<TaskActionResult | null>(null);
+  readonly listActionCompleted: WritableSignal<ListActionResult | null> = signal<ListActionResult | null>(null);
+
 
   constructor(private taskService: MainListTaskService, private listsService: MainListListService, private newListDialogService: NewListDialogService) {
     this.mainList = this.listsService.mainList
     this.tasks = this.taskService.tasks
-    this.tasksActionCompleted = this.taskService.actionCompleted
-    this.listActionCompleted = this.listsService.actionCompleted
   }
 
   public initialize() {
@@ -30,29 +29,32 @@ export class MainListService {
 
 
   onCreateNewTaskEvent(task: Partial<Task>) {
-    this.taskService.createTask(task, this.mainList()?._id!)
+    this.taskService.createTask(task, this.mainList()?._id!).subscribe((result: TaskActionResult) => {
+      this.tasksActionCompleted.set(result)
+      this.taskService.initialize(this.mainList()?._id!)
+    })
   }
 
   onDeleteTaskEvent(task: Task) {
-    this.taskService.confirmAndDeleteTask(task)
+    this.taskService.confirmAndDeleteTask(task).subscribe((result: TaskActionResult) => {
+      this.tasksActionCompleted.set(result)
+      this.taskService.initialize(this.mainList()?._id!)
+
+    })
   }
 
   onUpdateTaskEvent(task: Task) {
-    this.taskService.updateTask(task)
+    this.taskService.updateTask(task).subscribe((result: TaskActionResult) => {
+      this.tasksActionCompleted.set(result)
+      this.taskService.initialize(this.mainList()?._id!)
+
+    })
   }
   public addNewListEvent() {
     this.listsService.createList()
 
   }
-  // public onDeleteTaskEvent(task: Task) {
 
-  // }
-
-  // private getTasksData() {
-  //   return this.taskApiService.getTasksByListId(this.mainList()?._id!).subscribe((tasks: Task[]) => {
-  //     this.tasks.set(tasks)
-  //   })
-  // }
 
 
 
