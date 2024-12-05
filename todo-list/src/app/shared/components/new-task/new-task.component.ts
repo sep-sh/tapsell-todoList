@@ -12,7 +12,6 @@ import { ActionStatus } from '../../enums/shared.enum';
 enum NewTaskViewMode {
   VIEW, CREATE
 }
-export type TaskViewSize = 'COMPACT' | 'NORMAL'
 
 @Component({
   selector: 'app-new-task',
@@ -32,7 +31,6 @@ export class NewTaskComponent implements OnChanges {
   public taskActionCompleted = input<TaskActionResult | null>();
 
 
-  public taskViewSize = input<TaskViewSize>('NORMAL');
   public taskForm: FormGroup
   public viewMode = NewTaskViewMode
   public readonly mode: WritableSignal<NewTaskViewMode> = signal(NewTaskViewMode.VIEW);

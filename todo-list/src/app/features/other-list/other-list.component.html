@@ -1,10 +1,10 @@
-<div class="initialize_list">
+<div class="other_list">
   <app-list-header
     [list]="this.list()!"
     (onListEvent)="onListEvent($event)"
     [listActionCompleted]="listActionCompleted()"
   ></app-list-header>
-  <div class="task_list__tasks">
+  <div class="other_list__tasks">
     <app-new-task
       (createNewTask)="onAddNewTask($event)"
       [taskActionCompleted]="tasksActionCompleted()"

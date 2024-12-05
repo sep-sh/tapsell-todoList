@@ -4,7 +4,8 @@
 }
 
 .new_task {
-  max-height: 100%;
+  min-height: 185px;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -19,11 +20,4 @@
 .create_task_container {
   display: flex;
   flex-direction: column;
-}
-
-#compact-view {
-  height: auto;
-}
-#normal-view {
-  height: 100%;
 }

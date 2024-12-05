@@ -1,4 +1,4 @@
-import { Component, input, OnChanges, output, signal, SimpleChanges } from '@angular/core';
+import { Component, computed, effect, input, OnChanges, output, signal, SimpleChanges } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import {
   FormBuilder,
@@ -31,11 +31,14 @@ export class TaskComponent implements OnChanges {
   task = input.required<Task>();
   hideMoveToDaily = input<boolean>(false);
   taskActionCompleted = input<TaskActionResult | null>();
-
   taskDefaultValues = signal<Task | null>(null)
   taskEvent = output<TaskEvent>()
   taskForm: FormGroup;
-  mode: FormMode = FormMode.VIEW;
+
+  mode = signal<FormMode>(FormMode.VIEW)
+  checkboxDisabled = computed(() => this.mode() !== FormMode.EDIT);
+
+
   viewModes = FormMode
   constructor(private fb: FormBuilder) {
     this.taskForm = this.fb.group({
@@ -46,6 +49,14 @@ export class TaskComponent implements OnChanges {
       list: [],
       date: [],
     })
+    effect(() => {
+      const doneControl = this.taskForm.get('done');
+      if (this.checkboxDisabled()) {
+        doneControl?.disable();
+      } else {
+        doneControl?.enable();
+      }
+    });
 
   }
   ngOnChanges(changes: SimpleChanges): void {
@@ -58,6 +69,7 @@ export class TaskComponent implements OnChanges {
   }
 
 
+
   onTaskControlButtonsEvent(event: TaskEventType): void {
     switch (event) {
       case TaskEventType.DELETE:
@@ -65,7 +77,7 @@ export class TaskComponent implements OnChanges {
         break;
 
       case TaskEventType.EDIT:
-        this.mode = FormMode.EDIT;
+        this.mode.set(FormMode.EDIT);
         break;
 
       case TaskEventType.MOVE_TO_DAILY:
@@ -74,11 +86,11 @@ export class TaskComponent implements OnChanges {
 
       case TaskEventType.CANCEL:
         this.taskForm.patchValue(this.taskDefaultValues()!)
-        this.mode = FormMode.VIEW
+        this.mode.set(FormMode.VIEW)
         break;
 
       case TaskEventType.SUBMIT:
-        this.mode = FormMode.VIEW
+        this.mode.set(FormMode.VIEW)
         this.taskEvent.emit({ type: event, data: this.taskForm.value })
         break;
 

@@ -1,6 +1,5 @@
 @if (mode()===viewMode.VIEW) {
 <mat-card
-  [id]="taskViewSize() === 'COMPACT' ? 'compact-view' : 'normal-view'"
   class="new_task"
   appearance="outlined"
   (click)="onAddNewTaskClick()"
