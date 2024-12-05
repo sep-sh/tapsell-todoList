@@ -3,7 +3,11 @@
   <span id="list_header_space"></span>
 
   @if (showCreateNewList() ){
-  <button (click)="onAddNewListButton()" mat-icon-button>
+  <button
+    (click)="onAddNewListButton()"
+    mat-icon-button
+    matTooltip="Create new List!"
+  >
     <mat-icon>add</mat-icon>
   </button>
 
@@ -11,11 +15,12 @@
 
   <button
     (click)="onDeleteButtonClick()"
+    matTooltip="Delete List!"
     mat-icon-button
   >
     <mat-icon>delete</mat-icon>
   </button>
-  <button (click)="onEditButtonClick()" mat-icon-button>
+  <button (click)="onEditButtonClick()" mat-icon-button matTooltip="Edit List!">
     <mat-icon>edit</mat-icon>
   </button>
 
