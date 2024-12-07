@@ -1,0 +1,21 @@
+<div class="other_list">
+  <app-list-header
+    [list]="this.list()!"
+    (onListEvent)="onListEvent($event)"
+    [listActionCompleted]="listActionCompleted()"
+  ></app-list-header>
+  <div class="other_list__tasks">
+    <app-new-task
+      (createNewTask)="onAddNewTask($event)"
+      [taskActionCompleted]="tasksActionCompleted()"
+    ></app-new-task>
+    @for (task of tasks(); track $index) {
+    <app-task
+      [task]="task"
+      (taskEvent)="onTaskEvent($event)"
+      [hideMoveToDaily]="false"
+      [taskActionCompleted]="tasksActionCompleted()"
+    ></app-task>
+    }
+  </div>
+</div>

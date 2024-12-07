@@ -1,0 +1,22 @@
+<mat-card class="task" [formGroup]="taskForm" appearance="outlined">
+  <mat-card-header class="task__header">
+    <app-form-input [mode]="mode()" formControlName="title"></app-form-input>
+  </mat-card-header>
+  <mat-card-content>
+    <app-form-input
+      [mode]="mode()"
+      formControlName="description"
+    ></app-form-input>
+
+    <div class="task__btn_container">
+      <mat-checkbox formControlName="done" labelPosition="after"
+        >completed</mat-checkbox
+      >
+      <app-task-control-buttons
+        [hideMoveToDaily]="hideMoveToDaily()"
+        (taskControlButtonEvent)="onTaskControlButtonsEvent($event)"
+        [mode]="mode()"
+      ></app-task-control-buttons>
+    </div>
+  </mat-card-content>
+</mat-card>

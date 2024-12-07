@@ -1,0 +1,11 @@
+.task_control_buttons_container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  .danger_btn {
+    background-color: var(--mat-sys-error);
+    color: var(--mat-sys-on-error);
+  }
+}

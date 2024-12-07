@@ -1,0 +1,14 @@
+.other_list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  &__tasks {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    width: 100%;
+    app-task {
+      width: 100%;
+    }
+  }
+}

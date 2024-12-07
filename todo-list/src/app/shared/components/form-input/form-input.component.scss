@@ -1,0 +1,12 @@
+@use "@angular/material" as mat;
+
+.form_input {
+  min-height: 56px;
+  max-height: 100px;
+  max-width: 536px;
+  padding: 0px 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  overflow: auto;
+}

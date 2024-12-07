@@ -1,0 +1,34 @@
+<mat-toolbar [formGroup]="listForm">
+  <app-form-input [mode]="mode()" formControlName="title"></app-form-input>
+  <span id="list_header_space"></span>
+
+  @if (showCreateNewList() ){
+  <button
+    (click)="onAddNewListButton()"
+    mat-icon-button
+    matTooltip="Create new List!"
+  >
+    <mat-icon>add</mat-icon>
+  </button>
+
+  } @if(list()&& !list().isMain){ @if (mode()===formMode.VIEW) {
+
+  <button
+    (click)="onDeleteButtonClick()"
+    matTooltip="Delete List!"
+    mat-icon-button
+  >
+    <mat-icon>delete</mat-icon>
+  </button>
+  <button (click)="onEditButtonClick()" mat-icon-button matTooltip="Edit List!">
+    <mat-icon>edit</mat-icon>
+  </button>
+
+  } @else if (mode() ===formMode.EDIT) {
+  <app-action-buttons
+    (onAction)="onActionButonsEvent($event)"
+    [acceptButtonDisabled]="acceptButtonDisabled"
+  ></app-action-buttons>
+
+  } }
+</mat-toolbar>

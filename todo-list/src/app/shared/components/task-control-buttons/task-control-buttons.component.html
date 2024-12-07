@@ -1,0 +1,36 @@
+<div class="task_control_buttons_container">
+  @if (mode()===formMode.VIEW) {
+  <button
+    mat-mini-fab
+    (click)="handleAction(taskControlButtonsEvent.EDIT)"
+    matTooltip="Edit the task"
+  >
+    <mat-icon>edit</mat-icon>
+  </button>
+  @if(!hideMoveToDaily()){
+
+  <button
+    mat-mini-fab
+    [matTooltipPosition]="'below'"
+    (click)="handleAction(taskControlButtonsEvent.MOVE_TO_DAILY)"
+    matTooltip="Move To Daily List"
+  >
+    <mat-icon>trending_flat</mat-icon>
+  </button>
+  }
+  <button
+    mat-mini-fab
+    (click)="handleAction(taskControlButtonsEvent.DELETE)"
+    matTooltip="Delete the task"
+    class="danger_btn"
+  >
+    <mat-icon>delete</mat-icon>
+  </button>
+  } @else if (mode()===formMode.EDIT) {
+
+  <app-action-buttons
+    (onAction)="onActionButonsEvent($event)"
+  ></app-action-buttons>
+
+  }
+</div>
