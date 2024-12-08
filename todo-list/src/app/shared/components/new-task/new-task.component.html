@@ -1,16 +1,10 @@
-@if (mode()===viewMode.VIEW) {
-<mat-card
-  class="new_task"
-  appearance="outlined"
-  (click)="onAddNewTaskClick()"
->
+@switch (mode()) { @case (viewMode.VIEW) {
+<mat-card class="new_task" appearance="outlined" (click)="onAddNewTaskClick()">
   <mat-card-content class="new_task__content">
     <mat-icon>add_circle</mat-icon>
     <div>Add new task</div>
-  </mat-card-content>
-</mat-card>
-
-} @else if (mode()===viewMode.CREATE) {
+  </mat-card-content> </mat-card
+>} @case (viewMode.CREATE) {
 <div class="create_task_container"></div>
 <mat-card appearance="outlined">
   <mat-card-content [formGroup]="taskForm" class="create_task_container">
@@ -28,5 +22,4 @@
     ></app-action-buttons>
   </mat-card-content>
 </mat-card>
-
-}
+} }

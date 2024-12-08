@@ -11,7 +11,7 @@
     <mat-icon>add</mat-icon>
   </button>
 
-  } @if(list()&& !list().isMain){ @if (mode()===formMode.VIEW) {
+  } @if(showActionButtons()){ @switch (mode()) { @case (formMode.VIEW) {
 
   <button
     (click)="onDeleteButtonClick()"
@@ -24,11 +24,10 @@
     <mat-icon>edit</mat-icon>
   </button>
 
-  } @else if (mode() ===formMode.EDIT) {
+  } @case (formMode.EDIT) {
   <app-action-buttons
     (onAction)="onActionButonsEvent($event)"
     [acceptButtonDisabled]="acceptButtonDisabled"
   ></app-action-buttons>
-
-  } }
+  } } }
 </mat-toolbar>

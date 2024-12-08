@@ -1,8 +1,8 @@
-@if (mode()===formMode.VIEW) {
-<mat-card-title class="form_input">{{ control.value }}</mat-card-title>
-} @else if (mode()===formMode.EDIT) {
-<mat-form-field appearance="fill">
+@switch (mode()) { @case (formMode.VIEW) {
+<mat-card-title class="form_value">{{ control.value }}</mat-card-title>
+} @case (formMode.EDIT) {
+<mat-form-field appearance="fill" class="form_input">
   <mat-label>description</mat-label>
   <input matInput [formControl]="control" />
 </mat-form-field>
-}
+} }

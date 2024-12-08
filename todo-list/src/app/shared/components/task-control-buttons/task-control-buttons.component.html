@@ -1,5 +1,5 @@
 <div class="task_control_buttons_container">
-  @if (mode()===formMode.VIEW) {
+  @switch (mode()) { @case (formMode.VIEW) {
   <button
     mat-mini-fab
     (click)="handleAction(taskControlButtonsEvent.EDIT)"
@@ -26,11 +26,9 @@
   >
     <mat-icon>delete</mat-icon>
   </button>
-  } @else if (mode()===formMode.EDIT) {
-
+  } @case (formMode.EDIT) {
   <app-action-buttons
     (onAction)="onActionButonsEvent($event)"
   ></app-action-buttons>
-
-  }
+  } }
 </div>
